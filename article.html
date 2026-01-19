@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ &articleSingle.title }} - {{ &OPT.siteName }}</title>
+    <meta name="keywords" content="{{ &articleSingle.category }},{{ &articleSingle.tags }}">
+    <meta name="description" content="{{ &OPT.siteDescription }}">
+    
+    <!-- 引入 Tailwind CSS & Typography 插件 -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    
+    <!-- 代码高亮 (Atom One Dark 风格) -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        /* 针对文章内图片的基础样式优化 */
+        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); margin: 2rem auto; }
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- 导航栏 -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 font-bold text-xl">
+                    <a href="/" class="hover:text-blue-600 transition">{{ &OPT.siteName }}</a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    {{ #widgetMenuList }}
+                    <a href="{{ &url }}" class="text-sm font-medium hover:text-blue-600 transition">{{ &title }}</a>
+                    {{ /widgetMenuList }}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- 左侧文章主体 -->
+            <div class="lg:col-span-8">
+                <!-- 文章头图 -->
+                {{ #articleSingle.img }}
+                <div class="mb-8 rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                {{ /articleSingle.img }}
+
+                <article>
+                    <header class="mb-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            {{ #articleSingle.category }}
+                            <a href="/category/{{.}}" class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">{{.}}</a>
+                            {{ /articleSingle.category }}
+                            <span class="text-gray-400 text-sm">•</span>
+                            <time class="text-sm text-gray-500">{{ articleSingle.createDate10 }}</time>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-6 leading-tight">
+                            {{ &articleSingle.title }}
+                        </h1>
+                        <!-- 作者信息 -->
+                        <div class="flex items-center gap-3 py-4 border-y border-gray-100 dark:border-gray-800">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-teal-400 flex items-center justify-center text-white font-bold">
+                                {{ articleSingle.author.0 }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold">{{ articleSingle.author }}</p>
+                                <p class="text-xs text-gray-500">发布于 {{ articleSingle.createDate10 }}</p>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- 文章正文 - 使用 Tailwind Prose 渲染 -->
+                    <div class="prose prose-lg dark:prose-invert prose-blue max-w-none">
+                        {{ &articleSingle.contentHtml }}
+                    </div>
+
+                    <!-- 标签云 -->
+                    <footer class="mt-12 pt-6 border-t border-gray-100 dark:border-gray-800">
+                        <div class="flex flex-wrap gap-2">
+                            {{ #articleSingle.tags }}
+                            <a href="/tags/{{.}}" class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-blue-600 hover:text-white transition italic text-gray-600 dark:text-gray-400">#{{.}}</a>
+                            {{ /articleSingle.tags }}
+                        </div>
+                    </footer>
+                </article>
+
+                <!-- 上下篇导航 -->
+                <nav class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="prev-post">
+                        {{ #articleNewer }}
+                        <a href="{{ &url }}" class="group block p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:border-blue-500 transition shadow-sm">
+                            <span class="text-xs text-gray-400 uppercase tracking-widest">← 上一篇</span>
+                            <p class="mt-2 font-bold group-hover:text-blue-600 transition line-clamp-1">{{ &title }}</p>
+                        </a>
+                        {{ /articleNewer }}
+                    </div>
+                    <div class="next-post">
+                        {{ #articleOlder }}
+                        <a href="{{ &url }}" class="group block p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:border-blue-500 transition shadow-sm text-right">
+                            <span class="text-xs text-gray-400 uppercase tracking-widest">下一篇 →</span>
+                            <p class="mt-2 font-bold group-hover:text-blue-600 transition line-clamp-1">{{ &title }}</p>
+                        </a>
+                        {{ /articleOlder }}
+                    </div>
+                </nav>
+
+                <!-- 评论区钩子 -->
+                <div class="mt-12">
+                    {{ &OPT.commentCode }}
+                </div>
+            </div>
+
+            <!-- 右侧侧边栏 -->
+            <aside class="lg:col-span-4 space-y-10">
+                <!-- 近期文章 -->
+                <section>
+                    <h3 class="text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-1 h-4 bg-blue-600 rounded"></span>近期发布
+                    </h3>
+                    <ul class="space-y-4">
+                        {{ #widgetRecentlyList }}
+                        <li>
+                            <a href="{{ &url }}" class="group flex gap-3 items-center">
+                                <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-700 overflow-hidden text-xs text-gray-400 flex items-center justify-center font-bold">
+                                    {{ createDate10 }}
+                                </div>
+                                <span class="text-sm font-medium leading-snug group-hover:text-blue-600 transition line-clamp-2">{{ &title }}</span>
+                            </a>
+                        </li>
+                        {{ /widgetRecentlyList }}
+                    </ul>
+                </section>
+
+                <!-- 分类目录 -->
+                <section>
+                    <h3 class="text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-1 h-4 bg-blue-600 rounded"></span>分类目录
+                    </h3>
+                    <div class="flex flex-col gap-2">
+                        {{ #widgetCategoryList }}
+                        <a href="/category/{{.}}" class="group flex justify-between items-center p-2 rounded-lg hover:bg-white dark:hover:bg-gray-800 transition text-sm text-gray-600 dark:text-gray-400">
+                            <span>{{.}}</span>
+                            <span class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition">View</span>
+                        </a>
+                        {{ /widgetCategoryList }}
+                    </div>
+                </section>
+
+                <!-- 友情链接 -->
+                <section class="p-6 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-sm font-bold uppercase tracking-widest mb-4">友情链接</h3>
+                    <div class="flex flex-wrap gap-4">
+                        {{ #widgetLinkList }}
+                        <a href="{{ &url }}" target="_blank" class="text-sm text-blue-600 dark:text-blue-400 hover:underline underline-offset-4">{{ &title }}</a>
+                        {{ /widgetLinkList }}
+                        <a href="/admin/" class="text-sm text-gray-400 hover:text-blue-600">管理站点</a>
+                    </div>
+                </section>
+                {{ &OPT.widgetOther }}
+            </aside>
+        </div>
+    </main>
+
+    <footer class="mt-20 py-10 border-t border-gray-100 dark:border-gray-800">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <p class="text-sm text-gray-500">{{ &OPT.copyRight }}</p>
+        </div>
+    </footer>
+
+    <!-- 脚本加载 -->
+    <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // 初始化代码高亮
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+        });
+    </script>
+    {{ &OPT.codeBeforBody }}
+</body>
+</html>
