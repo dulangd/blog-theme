@@ -11,12 +11,13 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        。prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); margin: 2rem auto; }
+        /* 修复这里的全角句号 */
+        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); margin: 2rem auto; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-        。dark ::-webkit-scrollbar-thumb { background: #4b5563; }
-        。scrollbar-hide::-webkit-scrollbar { display: none; }
-        。scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -53,7 +54,6 @@
                             {{ /articleSingle.category }}
                             <span class="text-gray-400 text-sm">•</span>
                             <time class="text-sm text-gray-500">{{ articleSingle.createDate10 }}</time>
-                            <!-- 优化：详情页阅读量 -->
                             <span class="text-sm text-gray-500 flex items-center gap-1 ml-2">👁️ {{ articleSingle.viewCount }} 次阅读</span>
                         </div>
                         <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-6">
@@ -89,6 +89,7 @@
                 </nav>
             </div>
 
+            <!-- 侧边栏 -->
             <aside class="lg:col-span-4 space-y-10">
                 <section>
                     <h3 class="text-sm font-bold uppercase mb-4 flex items-center gap-2">
@@ -98,23 +99,21 @@
                         {{ #widgetRecentlyList }}
                         <li>
                             <a href="{{ &url }}" class="group flex gap-3 items-center">
-                                <!-- 缩略图保持 -->
-                                <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+                                <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden border border-gray-200 dark:border-gray-700">
                                     {{ #img }}
                                     <img src="{{ &img }}" class="w-full h-full object-cover transition group-hover:scale-110">
                                     {{ /img }}
                                     {{ ^img }}
-                                    <div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold">
+                                    <div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-200 dark:bg-gray-700">
                                         {{ createDate10 }}
                                     </div>
                                     {{ /img }}
                                 </div>
-                                <!-- 文字信息：新增阅读量显示 -->
                                 <div class="flex-grow">
-                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition line-clamp-2">
+                                    <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition line-clamp-2">
                                         {{ &title }}
                                     </span>
-                                    <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-2 uppercase tracking-wider">
+                                    <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-2">
                                         <span>👁️ {{ viewCount }}</span>
                                         <span>•</span>
                                         <span>{{ createDate10 }}</span>
