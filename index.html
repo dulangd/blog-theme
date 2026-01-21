@@ -113,6 +113,21 @@
                         {{ /widgetCategoryList }}
                     </ul>
                 </div>
+                <!-- 友情链接：放在侧边栏底部 -->
+                <section class="p-6 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 mt-10">
+                    <h3 class="text-sm font-bold uppercase tracking-widest mb-4 text-gray-900 dark:text-white">
+                        <span class="w-1 h-4 bg-blue-600 rounded inline-block mr-2"></span>友情链接
+                    </h3>
+                    <div class="flex flex-wrap gap-4">
+                        {{ #widgetLinkList }}
+                        <a href="{{ &url }}" target="_blank" class="text-sm text-blue-600 dark:text-blue-400 hover:underline underline-offset-4 transition">
+                            {{ &title }}
+                        </a>
+                        {{ /widgetLinkList }}
+                        <!-- 管理入口，方便自己进入 -->
+                        <a href="/admin/" class="text-sm text-gray-300 hover:text-blue-600 transition">管理</a>
+                    </div>
+                </section>
             </aside>
         </div>
     </main>
