@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ articleSingle.title }} - {{ siteName }}</title>
     <meta name="keywords" content="{{ articleSingle.category }},{{ articleSingle.tags }}">
     <meta name="description" content="{{ siteDescription }}">
@@ -63,7 +62,7 @@
                     <header class="mb-10">
                         <div class="flex items-center gap-3 mb-6">
                             {{ #articleSingle.category }}
-                            <a href="/category/{{.}}" class="text-xs font-bold uppercase text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1.5 rounded-full transition hover:bg-blue-100">{{.}}</a>
+                            <a href="/category/{{.}}" class="text-xs font-bold uppercase text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">{{.}}</a>
                             {{ /articleSingle.category }}
                             <span class="text-gray-300">•</span>
                             <time class="text-xs text-gray-500 font-medium">📅 {{ articleSingle.createDate10 }}</time>
@@ -76,12 +75,12 @@
                             <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20">{{ articleSingle.author.0 }}</div>
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white">{{ articleSingle.author }}</p>
-                                <p class="text-xs text-gray-400 font-medium uppercase tracking-widest mt-0.5 text-blue-500">Author</p>
+                                <p class="text-xs text-gray-400 font-medium uppercase mt-0.5 text-blue-500 tracking-widest">Author</p>
                             </div>
                         </div>
                     </header>
 
-                    <div class="prose prose-lg dark:prose-invert prose-blue max-w-none prose-headings:font-black prose-a:text-blue-600 prose-img:rounded-3xl prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800">
+                    <div class="prose prose-lg dark:prose-invert prose-blue max-w-none">
                         {{ &articleSingle.contentHtml }}
                     </div>
                 </article>
@@ -89,13 +88,13 @@
                 <nav class="mt-20 grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {{ #articleNewer }}
                     <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">← Previous Post</span>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">← Previous</span>
                         <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-lg">{{ &title }}</p>
                     </a>
                     {{ /articleNewer }}
                     {{ #articleOlder }}
                     <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition text-right">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Next Post →</span>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Next →</span>
                         <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-lg">{{ &title }}</p>
                     </a>
                     {{ /articleOlder }}
@@ -118,7 +117,7 @@
                                 <div class="flex-grow">
                                     <span class="text-sm font-bold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition line-clamp-2 leading-tight">{{ &title }}</span>
                                     <div class="text-[10px] text-gray-400 mt-1.5 flex items-center gap-2 font-medium">
-                                        <span class="flex items-center gap-1">👁️ {{ viewCount }}</span>
+                                        <span>👁️ {{ viewCount }}</span>
                                         <span class="text-gray-300">•</span>
                                         <span>{{ createDate10 }}</span>
                                     </div>
@@ -132,7 +131,7 @@
         </div>
     </main>
 
-    <footer class="mt-24 py-12 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-400 font-bold tracking-tight">
+    <footer class="mt-24 py-12 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-400 font-bold">
         Powered by Cloudflare Workers
     </footer>
 
