@@ -2,22 +2,30 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ articleSingle.title }} - {{ siteName }}</title>
-    <meta name="keywords" content="{{ articleSingle.category }},{{ articleSingle.tags }}">
-    <meta name="description" content="{{ siteDescription }}">
+    <title>{{ title }}</title>
+    
+    <!-- 1. 动态加载字体 URL -->
+    <link rel="stylesheet" href="{{ fontUrl }}">
+
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    
+    <script>
+        // 2. 利用 Tailwind 配置，将环境变量中的字体应用到全局
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: [{{{ fontSans }}}], // 使用三个大括号防止引号被转义
+                    },
+                }
+            }
+        }
+    </script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        /* 修复这里的全角句号 */
-        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); margin: 2rem auto; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        /* 3. 兜底 CSS，确保非 Tailwind 元素也生效 */
+        body { font-family: {{{ fontSans }}}; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
