@@ -10,13 +10,12 @@
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     
     <script>
-        // 2. 利用 Tailwind 配置，将环境变量中的字体应用到全局
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: [{{{ fontSans }}}], // 使用三个大括号防止引号被转义
+                        sans: [{{{ fontSans }}}],
                     },
                 }
             }
@@ -24,19 +23,19 @@
     </script>
 
     <style>
-        /* 3. 兜底 CSS，确保非 Tailwind 元素也生效 */
         body { font-family: {{{ fontSans }}}; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
-    <!-- 导航栏优化：手机端强制显示滚动菜单 -->
     <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-5xl mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between md:h-16 items-center py-3 md:py-0">
                 <div class="font-bold text-xl mb-2 md:mb-0">
                     <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
                 </div>
-                <!-- 导航菜单：全平台可见，手机端可左右滑动 -->
                 <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
                     <div class="flex space-x-1 md:space-x-4 pb-1 md:pb-0">
                         {{ #widgetMenuList }}
@@ -52,11 +51,9 @@
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            <!-- 文章列表 -->
             <div class="lg:col-span-8 space-y-12">
                 {{ #articleList }}
                 <article class="group relative flex flex-col items-start">
-                    <!-- 优化 1：给图片外层加 <a> 标签实现跳转 -->
                     {{ #img }}
                     <a href="{{ &url }}" class="relative w-full aspect-[16/9] mb-6 overflow-hidden rounded-2xl bg-gray-100 block">
                         <img src="{{ &img }}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105">
@@ -65,9 +62,7 @@
                 
                     <div class="flex items-center gap-x-4 text-xs mb-3">
                         <time class="text-gray-500">📅 {{ createDate10 }}</time>
-                        <!-- 优化 2：显示阅读量 -->
                         <span class="text-gray-500 flex items-center gap-1">👁️ {{ viewCount }}</span>
-                        
                         {{ #category }}
                         <a href="/category/{{.}}" class="relative z-10 rounded-full bg-blue-50 dark:bg-blue-900/30 px-3 py-1.5 font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-100">{{.}}</a>
                         {{ /category }}
@@ -80,15 +75,13 @@
                 </article>
                 {{ /articleList }}
 
-                <!-- 分页 -->
                 <nav class="flex items-center justify-between border-t border-gray-200 dark:border-gray-800 pt-8">
-                    {{ #pageNewer.0 }}<a href="{{ url }}" class="text-sm font-semibold text-blue-600">← 上一页</a>{{ /pageNewer.0 }}
+                    {{ #pageNewer }}<a href="{{ url }}" class="text-sm font-semibold text-blue-600">← 上一页</a>{{ /pageNewer }}
                     <div class="flex-grow"></div>
-                    {{ #pageOlder.0 }}<a href="{{ url }}" class="text-sm font-semibold text-blue-600">下一页 →</a>{{ /pageOlder.0 }}
+                    {{ #pageOlder }}<a href="{{ url }}" class="text-sm font-semibold text-blue-600">下一页 →</a>{{ /pageOlder }}
                 </nav>
             </div>
 
-            <!-- 侧边栏 -->
             <aside class="lg:col-span-4 space-y-12">
                 <section>
                     <h3 class="text-sm font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
@@ -98,15 +91,13 @@
                         {{ #widgetRecentlyList }}
                         <li>
                             <a href="{{ &url }}" class="group flex gap-3 items-start">
-                                <!-- 缩略图保持之前逻辑 -->
-                                <div class="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                                    {{ #img }}<img src="{{ &img }}" class="w-full h-full object-cover">{{ /img }}
-                                    {{ ^img }}<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400">{{ createDate10 }}</div>{{ /img }}
+                                <div class="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+                                    {{ #img }}<img src="{{ &img }}" class="w-full h-full object-cover transition group-hover:scale-110">{{ /img }}
+                                    {{ ^img }}<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-100 dark:bg-gray-800">{{ createDate10 }}</div>{{ /img }}
                                 </div>
                                 <div class="flex-grow pt-1">
-                                    <span class="text-sm font-bold group-hover:text-blue-600 transition line-clamp-2">{{ &title }}</span>
-                                    <!-- 优化：在标题下显示阅读量 -->
-                                    <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-2">
+                                    <span class="text-sm font-bold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition line-clamp-2">{{ &title }}</span>
+                                    <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-2 uppercase tracking-wider">
                                         <span>👁️ {{ viewCount }}</span>
                                         <span>•</span>
                                         <span>{{ createDate10 }}</span>
@@ -119,25 +110,20 @@
                 </section>
             
                 <div>
-                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-6">分类目录</h3>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-6 text-gray-900 dark:text-white">分类目录</h3>
                     <ul class="space-y-3">
                         {{ #widgetCategoryList }}
                         <li><a href="/category/{{.}}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm transition">{{.}}</a></li>
                         {{ /widgetCategoryList }}
                     </ul>
                 </div>
-                <!-- 友情链接：放在侧边栏底部 -->
+
                 <section class="p-6 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 mt-10">
-                    <h3 class="text-sm font-bold uppercase tracking-widest mb-4 text-gray-900 dark:text-white">
-                        <span class="w-1 h-4 bg-blue-600 rounded inline-block mr-2"></span>友情链接
-                    </h3>
+                    <h3 class="text-sm font-bold uppercase tracking-widest mb-4 text-gray-900 dark:text-white">友情链接</h3>
                     <div class="flex flex-wrap gap-4">
                         {{ #widgetLinkList }}
-                        <a href="{{ &url }}" target="_blank" class="text-sm text-blue-600 dark:text-blue-400 hover:underline underline-offset-4 transition">
-                            {{ &title }}
-                        </a>
+                        <a href="{{ &url }}" target="_blank" class="text-sm text-blue-600 dark:text-blue-400 hover:underline transition">{{ &title }}</a>
                         {{ /widgetLinkList }}
-                        <!-- 管理入口，方便自己进入 -->
                         <a href="/admin/" class="text-sm text-gray-300 hover:text-blue-600 transition">管理</a>
                     </div>
                 </section>
@@ -146,7 +132,7 @@
     </main>
 
     <footer class="border-t border-gray-200 dark:border-gray-800 mt-24 py-12 text-center text-sm text-gray-500">
-        {{ &OPT.copyRight }}
+        {{ siteName }} &copy; 2024 · Powered by Cloudflare
     </footer>
 </body>
 </html>
