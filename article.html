@@ -2,21 +2,24 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ articleSingle.title }} - {{ siteName }}</title>
+    <meta name="keywords" content="{{ articleSingle.category }},{{ articleSingle.tags }}">
+    <meta name="description" content="{{ siteDescription }}">
     
     <!-- 1. 动态加载字体 URL -->
     <link rel="stylesheet" href="{{ fontUrl }}">
 
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     
     <script>
-        // 2. 利用 Tailwind 配置，将环境变量中的字体应用到全局
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: [{{{ fontSans }}}], // 使用三个大括号防止引号被转义
+                        sans: [{{{ fontSans }}}],
                     },
                 }
             }
@@ -24,20 +27,24 @@
     </script>
 
     <style>
-        /* 3. 兜底 CSS，确保非 Tailwind 元素也生效 */
-        body { font-family: {{{ fontSans }}}; }
+        body { font-family: {{{ fontSans }}}; scroll-behavior: smooth; }
+        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); margin: 2rem auto; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
-    <!-- 详情页导航 -->
     <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-5xl mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between md:h-16 items-center py-3 md:py-0">
-                <div class="font-bold text-xl mb-2 md:mb-0"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
+                <div class="font-bold text-xl mb-2 md:mb-0 text-gray-900 dark:text-white"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
                 <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
                     <div class="flex space-x-1 md:space-x-4 pb-1 md:pb-0">
                         {{ #widgetMenuList }}
-                        <a href="{{ &url }}" class="inline-block px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-600 hover:text-white transition">{{ &title }}</a>
+                        <a href="{{ &url }}" class="inline-block px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-600 hover:text-white transition text-gray-600 dark:text-gray-300">{{ &title }}</a>
                         {{ /widgetMenuList }}
                     </div>
                 </div>
@@ -64,13 +71,13 @@
                             <time class="text-sm text-gray-500">{{ articleSingle.createDate10 }}</time>
                             <span class="text-sm text-gray-500 flex items-center gap-1 ml-2">👁️ {{ articleSingle.viewCount }} 次阅读</span>
                         </div>
-                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-6">
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-white">
                             {{ &articleSingle.title }}
                         </h1>
                         <div class="flex items-center gap-3 py-4 border-y border-gray-100 dark:border-gray-800">
-                            <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">{{ articleSingle.author.0 }}</div>
+                            <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold uppercase">{{ articleSingle.author.0 }}</div>
                             <div>
-                                <p class="text-sm font-semibold">{{ articleSingle.author }}</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ articleSingle.author }}</p>
                                 <p class="text-xs text-gray-500">作者</p>
                             </div>
                         </div>
@@ -83,24 +90,23 @@
 
                 <nav class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {{ #articleNewer }}
-                    <a href="{{ &url }}" class="p-6 bg-white dark:bg-gray-800 border rounded-2xl hover:border-blue-500 shadow-sm transition">
+                    <a href="{{ &url }}" class="p-6 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-2xl hover:border-blue-500 shadow-sm transition">
                         <span class="text-xs text-gray-400">← 上一篇</span>
-                        <p class="mt-2 font-bold line-clamp-1">{{ &title }}</p>
+                        <p class="mt-2 font-bold text-gray-900 dark:text-white line-clamp-1">{{ &title }}</p>
                     </a>
                     {{ /articleNewer }}
                     {{ #articleOlder }}
-                    <a href="{{ &url }}" class="p-6 bg-white dark:bg-gray-800 border rounded-2xl hover:border-blue-500 shadow-sm transition text-right">
+                    <a href="{{ &url }}" class="p-6 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-2xl hover:border-blue-500 shadow-sm transition text-right">
                         <span class="text-xs text-gray-400">下一篇 →</span>
-                        <p class="mt-2 font-bold line-clamp-1">{{ &title }}</p>
+                        <p class="mt-2 font-bold text-gray-900 dark:text-white line-clamp-1">{{ &title }}</p>
                     </a>
                     {{ /articleOlder }}
                 </nav>
             </div>
 
-            <!-- 侧边栏 -->
             <aside class="lg:col-span-4 space-y-10">
                 <section>
-                    <h3 class="text-sm font-bold uppercase mb-4 flex items-center gap-2">
+                    <h3 class="text-sm font-bold uppercase mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
                         <span class="w-1 h-4 bg-blue-600 rounded"></span>近期发布
                     </h3>
                     <ul class="space-y-4">
@@ -108,20 +114,12 @@
                         <li>
                             <a href="{{ &url }}" class="group flex gap-3 items-center">
                                 <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden border border-gray-200 dark:border-gray-700">
-                                    {{ #img }}
-                                    <img src="{{ &img }}" class="w-full h-full object-cover transition group-hover:scale-110">
-                                    {{ /img }}
-                                    {{ ^img }}
-                                    <div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-200 dark:bg-gray-700">
-                                        {{ createDate10 }}
-                                    </div>
-                                    {{ /img }}
+                                    {{ #img }}<img src="{{ &img }}" class="w-full h-full object-cover transition group-hover:scale-110">{{ /img }}
+                                    {{ ^img }}<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-100 dark:bg-gray-800">{{ createDate10 }}</div>{{ /img }}
                                 </div>
                                 <div class="flex-grow">
-                                    <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition line-clamp-2">
-                                        {{ &title }}
-                                    </span>
-                                    <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-2">
+                                    <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition line-clamp-2">{{ &title }}</span>
+                                    <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-2 uppercase tracking-wider">
                                         <span>👁️ {{ viewCount }}</span>
                                         <span>•</span>
                                         <span>{{ createDate10 }}</span>
@@ -136,8 +134,8 @@
         </div>
     </main>
 
-    <footer class="mt-20 py-10 border-t text-center text-sm text-gray-500">
-        {{ &OPT.copyRight }}
+    <footer class="mt-20 py-10 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-500">
+        {{ siteName }} &copy; 2024
     </footer>
 
     <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
