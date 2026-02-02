@@ -2,47 +2,37 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ articleSingle.title }} - {{ siteName }}</title>
-    <meta name="keywords" content="{{ articleSingle.category }},{{ articleSingle.tags }}">
-    <meta name="description" content="{{ siteDescription }}">
-    
     <link rel="stylesheet" href="{{ fontUrl }}">
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/atom-one-dark.min.css">
-    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: [{{{ fontSans }}}],
-                    },
+                    fontFamily: { sans: [{{{ fontSans }}}], },
                 }
             }
         }
     </script>
-
     <style>
-        body { font-family: {{{ fontSans }}} !important; scroll-behavior: smooth; }
-        .prose { font-family: {{{ fontSans }}} !important; }
-        .prose img { border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); margin: 2rem auto; border: 1px solid #eee; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+        body { font-family: {{{ fontSans }}} !important; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin: 1.5rem auto; border: 1px solid #eee; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
-    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-5xl mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between md:h-16 items-center py-3 md:py-0">
-                <div class="font-bold text-xl mb-2 md:mb-0 text-gray-900 dark:text-white underline decoration-blue-500 decoration-4 underline-offset-4"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
+                <div class="font-bold text-xl mb-2 md:mb-0 text-gray-900 dark:text-white border-b-4 border-blue-500"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
                 <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
-                    <div class="flex space-x-1 md:space-x-4 pb-1 md:pb-0">
+                    <div class="flex space-x-2 md:space-x-4 pb-1 md:pb-0 justify-start">
                         {{ #widgetMenuList }}
-                        <a href="{{ &url }}" class="inline-block px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-600 hover:text-white transition text-gray-600 dark:text-gray-300">{{ &title }}</a>
+                        <a href="{{ &url }}" class="inline-block px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium hover:bg-blue-600 hover:text-white transition text-gray-600 dark:text-gray-300">{{ &title }}</a>
                         {{ /widgetMenuList }}
                     </div>
                 </div>
@@ -50,53 +40,52 @@
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10">
             <div class="lg:col-span-8">
                 {{ #articleSingle.img }}
-                <div class="mb-10 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800">
-                    <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover max-h-[450px]">
+                <div class="mb-6 md:mb-10 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm">
+                    <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover max-h-[300px] md:max-h-[450px]">
                 </div>
                 {{ /articleSingle.img }}
 
                 <article>
-                    <header class="mb-10">
-                        <div class="flex items-center gap-3 mb-6">
+                    <header class="mb-8 md:mb-10">
+                        <div class="flex flex-wrap items-center gap-2 mb-4">
                             {{ #articleSingle.category }}
-                            <a href="/category/{{.}}" class="text-xs font-bold uppercase text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full transition hover:bg-blue-100">{{.}}</a>
+                            <a href="/category/{{.}}" class="text-[10px] font-bold uppercase text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">{{.}}</a>
                             {{ /articleSingle.category }}
-                            <span class="text-gray-300">•</span>
-                            <time class="text-xs text-gray-500 font-medium">📅 {{ articleSingle.createDate10 }}</time>
-                            <span class="text-xs text-gray-500 font-medium ml-2 flex items-center gap-1">👁️ {{ articleSingle.viewCount }} 次阅读</span>
+                            <time class="text-[11px] text-gray-400 font-medium">📅 {{ articleSingle.createDate10 }}</time>
+                            <span class="text-[11px] text-gray-400 font-medium ml-1 flex items-center gap-1">👁️ {{ articleSingle.viewCount }} 阅读</span>
                         </div>
-                        <h1 class="text-4xl font-extrabold tracking-tight mb-8 text-gray-900 dark:text-white leading-tight font-black">
+                        <h1 class="text-2xl md:text-4xl font-black tracking-tight mb-6 md:mb-8 text-gray-900 dark:text-white leading-tight">
                             {{ &articleSingle.title }}
                         </h1>
-                        <div class="flex items-center gap-4 py-6 border-y border-gray-100 dark:border-gray-800">
-                            <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20 uppercase">{{ articleSingle.author.0 }}</div>
+                        <div class="flex items-center gap-3 py-4 border-y border-gray-100 dark:border-gray-800">
+                            <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-lg shadow-lg">{{ articleSingle.author.0 }}</div>
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white">{{ articleSingle.author }}</p>
-                                <p class="text-xs text-gray-400 font-medium uppercase mt-0.5 text-blue-500 tracking-widest">Author</p>
+                                <p class="text-[10px] text-gray-400 font-medium uppercase tracking-widest text-blue-500">Author</p>
                             </div>
                         </div>
                     </header>
 
-                    <div class="prose prose-lg dark:prose-invert prose-blue max-w-none prose-headings:font-black prose-a:text-blue-600 prose-img:rounded-3xl prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800">
+                    <div class="prose prose-sm sm:prose-base md:prose-lg dark:prose-invert prose-blue max-w-none prose-headings:font-black prose-a:text-blue-600">
                         {{ &articleSingle.contentHtml }}
                     </div>
                 </article>
 
-                <nav class="mt-20 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <nav class="mt-12 md:mt-20 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     {{ #articleNewer }}
-                    <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">← Previous Post</span>
-                        <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-lg leading-snug">{{ &title }}</p>
+                    <a href="{{ &url }}" class="group p-6 md:p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl md:rounded-3xl hover:border-blue-500 shadow-sm transition">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">← Previous</span>
+                        <p class="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-sm md:text-lg">{{ &title }}</p>
                     </a>
                     {{ /articleNewer }}
                     {{ #articleOlder }}
-                    <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition text-right">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Next Post →</span>
-                        <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-lg leading-snug">{{ &title }}</p>
+                    <a href="{{ &url }}" class="group p-6 md:p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl md:rounded-3xl hover:border-blue-500 shadow-sm transition text-right">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Next →</span>
+                        <p class="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-sm md:text-lg">{{ &title }}</p>
                     </a>
                     {{ /articleOlder }}
                 </nav>
@@ -104,23 +93,21 @@
 
             <aside class="lg:col-span-4 space-y-10">
                 <section>
-                    <h3 class="text-sm font-black uppercase tracking-widest mb-6 flex items-center gap-2 text-gray-900 dark:text-white">
-                        <span class="w-1.5 h-4 bg-blue-600 rounded"></span>Recent Articles
+                    <h3 class="text-xs md:text-sm font-black uppercase tracking-widest mb-6 flex items-center gap-2 text-gray-900 dark:text-white">
+                        <span class="w-1.5 h-4 bg-blue-600 rounded"></span>Recent
                     </h3>
                     <ul class="space-y-6">
                         {{ #widgetRecentlyList }}
                         <li>
-                            <a href="{{ &url }}" class="group flex gap-4 items-center text-gray-800 dark:text-gray-200">
-                                <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm">
+                            <a href="{{ &url }}" class="group flex gap-4 items-center">
+                                <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gray-100 dark:bg-gray-800 overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm">
                                     {{ #img }}<img src="{{ &img }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">{{ /img }}
                                     {{ ^img }}<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-100 dark:bg-gray-800 italic">{{ createDate10 }}</div>{{ /img }}
                                 </div>
                                 <div class="flex-grow">
-                                    <span class="text-sm font-bold group-hover:text-blue-600 transition line-clamp-2 leading-tight">{{ &title }}</span>
-                                    <div class="text-[10px] text-gray-400 mt-1.5 flex items-center gap-2 font-medium">
-                                        <span class="flex items-center gap-1">👁️ {{ viewCount }}</span>
-                                        <span class="text-gray-300">•</span>
-                                        <span>{{ createDate10 }}</span>
+                                    <span class="text-xs md:text-sm font-bold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition line-clamp-2 leading-tight">{{ &title }}</span>
+                                    <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-2 font-medium">
+                                        <span>👁️ {{ viewCount }}</span><span>•</span><span>{{ createDate10 }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -132,10 +119,9 @@
         </div>
     </main>
 
-    <footer class="mt-24 py-12 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-400 font-bold tracking-tight">
-        Powered by Cloudflare Workers
+    <footer class="mt-20 py-10 border-t border-gray-100 dark:border-gray-800 text-center text-[10px] md:text-xs text-gray-400 font-bold tracking-tight leading-loose">
+        Powered by Cloudflare Workers · <a href="/admin/" class="hover:text-blue-600 transition">Admin Login</a>
     </footer>
-
     <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });</script>
 </body>
