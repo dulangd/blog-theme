@@ -10,11 +10,7 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: [{{{ fontSans }}}], },
-                }
-            }
+            theme: { extend: { fontFamily: { sans: [{{{ fontSans }}}], }, } }
         }
     </script>
     <style>
@@ -26,21 +22,20 @@
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen">
-    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 text-sm">
         <div class="max-w-5xl mx-auto px-4">
-            <div class="flex flex-row justify-between h-16 items-center gap-4">
-                <div class="font-bold text-lg md:text-xl text-gray-900 dark:text-white border-b-2 border-blue-500 whitespace-nowrap"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
-                <div class="flex-grow overflow-x-auto whitespace-nowrap scrollbar-hide">
-                    <div class="flex space-x-3 md:space-x-4 justify-end">
+            <div class="flex flex-row justify-between h-14 md:h-16 items-center gap-4">
+                <div class="font-bold text-lg md:text-xl border-b-2 border-blue-500 whitespace-nowrap"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
+                <div class="flex-grow overflow-x-auto whitespace-nowrap scrollbar-hide text-right">
+                    <div class="flex space-x-2 md:space-x-4 justify-end">
                         {{ #widgetMenuList }}
-                        <a href="{{ &url }}" class="inline-block px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium hover:bg-blue-600 hover:text-white transition text-gray-600 dark:text-gray-300">{{ &title }}</a>
+                        <a href="{{ &url }}" class="inline-block px-3 py-1.5 rounded-lg font-medium hover:bg-blue-600 hover:text-white transition text-gray-600 dark:text-gray-300">{{ &title }}</a>
                         {{ /widgetMenuList }}
                     </div>
                 </div>
             </div>
         </div>
     </nav>
-
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10">
             <div class="lg:col-span-8">
@@ -49,49 +44,42 @@
                     <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover max-h-[300px] md:max-h-[450px]">
                 </div>
                 {{ /articleSingle.img }}
-
                 <article>
                     <header class="mb-8 md:mb-10">
                         <div class="flex flex-wrap items-center gap-2 mb-4 uppercase tracking-widest font-bold">
                             {{ #articleSingle.category }}
                             <a href="/category/{{.}}" class="text-[10px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">{{.}}</a>
                             {{ /articleSingle.category }}
-                            <time class="text-[11px] text-gray-400 font-medium">📅 {{ articleSingle.createDate10 }}</time>
-                            <span class="text-[11px] text-blue-500 ml-1">👁️ {{ articleSingle.viewCount }}</span>
+                            <time class="text-[10px] text-gray-400">📅 {{ articleSingle.createDate10 }}</time>
+                            <span class="text-[10px] text-blue-500 ml-1">👁️ {{ articleSingle.viewCount }} 阅读</span>
                         </div>
                         <h1 class="text-2xl md:text-4xl font-black tracking-tight mb-6 md:mb-8 text-gray-900 dark:text-white leading-tight font-sans">
                             {{ &articleSingle.title }}
                         </h1>
                         <div class="flex items-center gap-3 py-4 border-y border-gray-100 dark:border-gray-800">
                             <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-lg shadow-lg uppercase">{{ articleSingle.author.0 }}</div>
-                            <div>
-                                <p class="text-sm font-bold text-gray-900 dark:text-white leading-none">{{ articleSingle.author }}</p>
-                                <p class="text-[10px] text-gray-400 font-medium uppercase tracking-widest text-blue-500 mt-1">Author</p>
-                            </div>
+                            <div><p class="text-sm font-bold text-gray-900 dark:text-white leading-none">{{ articleSingle.author }}</p><p class="text-[10px] text-gray-400 font-medium uppercase mt-1 tracking-widest">Author</p></div>
                         </div>
                     </header>
-
-                    <div class="prose prose-sm sm:prose-base md:prose-lg dark:prose-invert prose-blue prose-headings:font-black prose-a:text-blue-600 prose-pre:bg-gray-900">
+                    <div class="prose prose-sm sm:prose-base md:prose-lg dark:prose-invert prose-blue prose-headings:font-black prose-a:text-blue-600">
                         {{ &articleSingle.contentHtml }}
                     </div>
                 </article>
-
-                <nav class="mt-12 md:mt-20 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 border-t border-gray-100 dark:border-gray-800 pt-10 text-gray-800 dark:text-gray-200">
+                <nav class="mt-12 md:mt-20 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 border-t border-gray-100 dark:border-gray-800 pt-10">
                     {{ #articleNewer }}
                     <a href="{{ &url }}" class="group p-6 md:p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl md:rounded-3xl hover:border-blue-500 shadow-sm transition">
                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">← Previous</span>
-                        <p class="font-bold group-hover:text-blue-600 transition line-clamp-1 text-sm md:text-lg leading-snug">{{ &title }}</p>
+                        <p class="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-sm md:text-lg">{{ &title }}</p>
                     </a>
                     {{ /articleNewer }}
                     {{ #articleOlder }}
                     <a href="{{ &url }}" class="group p-6 md:p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl md:rounded-3xl hover:border-blue-500 shadow-sm transition text-right">
                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Next →</span>
-                        <p class="font-bold group-hover:text-blue-600 transition line-clamp-1 text-sm md:text-lg leading-snug">{{ &title }}</p>
+                        <p class="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-sm md:text-lg">{{ &title }}</p>
                     </a>
                     {{ /articleOlder }}
                 </nav>
             </div>
-
             <aside class="lg:col-span-4 space-y-10">
                 <section>
                     <h3 class="text-xs md:text-sm font-black uppercase tracking-widest mb-6 flex items-center gap-2 text-gray-900 dark:text-white">
@@ -105,11 +93,8 @@
                                     {{ #img }}<img src="{{ &img }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">{{ /img }}
                                     {{ ^img }}<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-100 dark:bg-gray-800 italic">{{ createDate10 }}</div>{{ /img }}
                                 </div>
-                                <div class="flex-grow text-gray-800 dark:text-gray-200">
-                                    <span class="text-xs md:text-sm font-bold group-hover:text-blue-600 transition line-clamp-2 leading-tight">{{ &title }}</span>
-                                    <div class="text-[10px] text-gray-400 mt-1.5 flex items-center gap-2 font-medium">
-                                        <span>👁️ {{ viewCount }}</span><span>•</span><span>{{ createDate10 }}</span>
-                                    </div>
+                                <div class="flex-grow text-gray-800 dark:text-gray-200 text-sm font-bold group-hover:text-blue-600 transition line-clamp-2 leading-tight">{{ &title }}
+                                    <div class="text-[10px] text-gray-400 mt-1 font-medium uppercase tracking-tighter">👁️ {{ viewCount }} · {{ createDate10 }}</div>
                                 </div>
                             </a>
                         </li>
