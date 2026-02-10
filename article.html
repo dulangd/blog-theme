@@ -8,10 +8,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: { fontFamily: { sans: [{{{ fontSans }}}], }, } }
-        }
+        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: [{{{ fontSans }}}], }, } } }
     </script>
     <style>
         * { font-family: {{{ fontSans }}} !important; }
@@ -63,13 +60,13 @@
 
         <nav class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-900 border border-gray-100 dark:border-gray-900">
             {{ #articleNewer }}
-            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900 transition">
+            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900 transition text-gray-900 dark:text-white">
                 <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">← Previous Story</span>
                 <p class="font-bold text-lg tracking-tight line-clamp-2 leading-snug">{{ &title }}</p>
             </a>
             {{ /articleNewer }}
             {{ #articleOlder }}
-            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900 transition text-right">
+            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900 transition text-right text-gray-900 dark:text-white">
                 <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">Next Story →</span>
                 <p class="font-bold text-lg tracking-tight line-clamp-2 leading-snug">{{ &title }}</p>
             </a>
