@@ -14,104 +14,77 @@
         }
     </script>
     <style>
-        body { font-family: {{{ fontSans }}} !important; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        h1, h2, h3, h4, .font-sans { font-family: {{{ fontSans }}} !important; }
-        .prose { font-family: {{{ fontSans }}} !important; max-width: none; }
-        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin: 1.5rem auto; border: 1px solid #eee; }
+        * { font-family: {{{ fontSans }}} !important; }
+        body { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        .prose { max-width: none; font-size: 1.125rem; line-height: 1.8; }
+        .prose img { border-radius: 0.5rem; margin: 3rem auto; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen">
-    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 text-sm font-bold">
-        <div class="max-w-5xl mx-auto px-4">
-            <div class="flex flex-row justify-between h-14 md:h-16 items-center gap-4">
-                <div class="font-bold text-lg md:text-xl border-b-2 border-blue-500 whitespace-nowrap leading-none"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
-                <div class="flex-grow overflow-x-auto whitespace-nowrap scrollbar-hide text-right">
-                    <div class="flex space-x-3 md:space-x-4 justify-end">
-                        {{ #widgetMenuList }}
-                        <a href="{{ &url }}" class="inline-block px-3 py-1.5 rounded-lg text-base md:text-lg hover:bg-blue-600 hover:text-white transition text-gray-600 dark:text-gray-300">{{ &title }}</a>
-                        {{ /widgetMenuList }}
-                    </div>
-                </div>
-            </div>
+<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+    <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm h-14 md:h-16 flex items-center px-4 md:px-8 justify-between">
+        <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
+        <div class="flex space-x-6 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-gray-400 overflow-x-auto scrollbar-hide">
+            {{ #widgetMenuList }}<a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>{{ /widgetMenuList }}
         </div>
     </nav>
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
-            <div class="lg:col-span-8">
-                {{ #articleSingle.img }}
-                <div class="mb-8 md:mb-12 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800">
-                    <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover max-h-[300px] md:max-h-[500px]">
-                </div>
-                {{ /articleSingle.img }}
-                <article>
-                    <header class="mb-10 md:mb-14 text-gray-900 dark:text-white font-sans">
-                        <div class="flex flex-wrap items-center gap-3 mb-6 uppercase tracking-widest font-bold">
-                            {{ #articleSingle.category }}
-                            <a href="/category/{{.}}" class="text-[11px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">{{.}}</a>
-                            {{ /articleSingle.category }}
-                            <time class="text-xs text-gray-400 font-bold tracking-tight">📅 {{ articleSingle.createDate10 }}</time>
-                            <span class="text-xs text-blue-500 font-black underline decoration-2">👁️ {{ articleSingle.viewCount }}</span>
-                        </div>
-                        <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-6 md:mb-10 leading-tight">
-                            {{ &articleSingle.title }}
-                        </h1>
-                        <div class="flex items-center gap-4 py-6 border-y border-gray-100 dark:border-gray-800">
-                            <div class="w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-2xl shadow-lg uppercase">{{ articleSingle.author.0 }}</div>
-                            <div><p class="text-lg font-bold text-gray-900 dark:text-white leading-none">{{ articleSingle.author }}</p><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-blue-500 mt-2">Verified Author</p></div>
-                        </div>
-                    </header>
-                    <!-- 排版优化：prose-base (16px) 手机, prose-xl (20px) 电脑 -->
-                    <div class="prose prose-base sm:prose-lg md:prose-xl dark:prose-invert prose-blue prose-headings:font-black prose-a:text-blue-600">
-                        {{ &articleSingle.contentHtml }}
-                    </div>
-                </article>
-                <nav class="mt-16 md:mt-24 grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-100 dark:border-gray-800 pt-12 text-gray-800 dark:text-gray-200">
-                    {{ #articleNewer }}
-                    <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">← Previous</span>
-                        <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-base md:text-xl leading-snug">{{ &title }}</p>
-                    </a>
-                    {{ /articleNewer }}
-                    {{ #articleOlder }}
-                    <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition text-right">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Next →</span>
-                        <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-base md:text-xl leading-snug">{{ &title }}</p>
-                    </a>
-                    {{ /articleOlder }}
-                </nav>
-            </div>
-            <aside class="lg:col-span-4 space-y-10">
-                <section>
-                    <h3 class="text-sm md:text-base font-black uppercase tracking-widest mb-8 flex items-center gap-2 text-gray-900 dark:text-white">
-                        <span class="w-1.5 h-4 bg-blue-600 rounded"></span>Recent Articles
-                    </h3>
-                    <ul class="space-y-8">
-                        {{ #widgetRecentlyList }}
-                        <li>
-                            <a href="{{ &url }}" class="group flex gap-4 items-center">
-                                <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm">
-                                    {{ #img }}<img src="{{ &img }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">{{ /img }}
-                                    {{ ^img }}<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-100 dark:bg-gray-800 italic">{{ createDate10 }}</div>{{ /img }}
-                                </div>
-                                <div class="flex-grow text-gray-800 dark:text-gray-200 leading-tight">
-                                    <span class="text-sm md:text-base font-bold group-hover:text-blue-600 transition line-clamp-2 leading-snug">{{ &title }}</span>
-                                    <div class="text-[10px] text-gray-400 mt-2 flex items-center gap-2 font-medium uppercase tracking-tight">
-                                        <span>👁️ {{ viewCount }}</span><span>•</span><span>{{ createDate10 }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        {{ /widgetRecentlyList }}
-                    </ul>
-                </section>
-            </aside>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 md:py-24">
+        {{ #articleSingle.img }}
+        <div class="mb-12 md:mb-20 rounded-sm overflow-hidden shadow-2xl">
+            <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover max-h-[600px]">
         </div>
+        {{ /articleSingle.img }}
+
+        <article>
+            <header class="mb-12 md:mb-20 text-center">
+                <div class="flex justify-center items-center gap-3 mb-8 uppercase tracking-[0.3em] font-bold text-[10px]">
+                    {{ #articleSingle.category }}
+                    <a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 px-3 py-1">{{.}}</a>
+                    {{ /articleSingle.category }}
+                    <span class="text-gray-300">•</span>
+                    <span class="text-gray-400">📅 {{ articleSingle.createDate10 }}</span>
+                    <span class="text-blue-500 underline underline-offset-4">👁️ {{ articleSingle.viewCount }}</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-12">
+                    {{ &articleSingle.title }}
+                </h1>
+                <div class="flex flex-col items-center gap-4 py-8 border-y border-gray-100 dark:border-gray-900">
+                    <div class="w-16 h-16 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center font-black text-2xl uppercase">{{ articleSingle.author.0 }}</div>
+                    <p class="text-xs font-black uppercase tracking-[0.4em]">Written By {{ articleSingle.author }}</p>
+                </div>
+            </header>
+
+            <div class="prose prose-blue dark:prose-invert">
+                {{ &articleSingle.contentHtml }}
+            </div>
+        </article>
+
+        <nav class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-900 border border-gray-100 dark:border-gray-900">
+            {{ #articleNewer }}
+            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900 transition">
+                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">← Previous Story</span>
+                <p class="font-bold text-lg tracking-tight line-clamp-2 leading-snug">{{ &title }}</p>
+            </a>
+            {{ /articleNewer }}
+            {{ #articleOlder }}
+            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900 transition text-right">
+                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">Next Story →</span>
+                <p class="font-bold text-lg tracking-tight line-clamp-2 leading-snug">{{ &title }}</p>
+            </a>
+            {{ /articleOlder }}
+        </nav>
     </main>
-    <footer class="mt-24 py-12 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-400 font-bold uppercase tracking-widest">
-        Powered by Cloudflare Workers
+
+    <footer class="bg-gray-50 dark:bg-gray-950 py-20 text-center border-t border-gray-100 dark:border-gray-900">
+        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-4">The End</p>
+        <div class="flex justify-center gap-6 text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-8">
+            <a href="/">Home</a><a href="/admin/">Dashboard</a>
+        </div>
+        <p class="text-[9px] text-gray-300 font-bold uppercase tracking-widest italic">&copy; {{ siteName }} 2024</p>
     </footer>
+
     <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });</script>
 </body>
