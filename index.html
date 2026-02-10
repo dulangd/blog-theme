@@ -4,33 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ title }}</title>
+    <!-- 强制加载字体且不转义 URL -->
     <link rel="stylesheet" href="{{{ fontUrl }}}">
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { fontFamily: { sans: [{{{ fontSans }}}], }, } }
+            theme: { extend: { fontFamily: { sans: [{{{ fontSans }}}], serif: ['"Noto Serif SC"', 'serif'], }, } }
         }
     </script>
     <style>
+        /* 强行统一全站字体，解决首页标题不一致问题 */
         * { font-family: {{{ fontSans }}} !important; }
         body { -webkit-font-smoothing: antialiased; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        /* 杂志风装饰线 */
         .section-divider { display: flex; align-items: center; margin: 3rem 0; }
         .section-divider::after { content: ""; flex: 1; height: 1px; background: #eee; margin-left: 1rem; }
         .dark .section-divider::after { background: #333; }
     </style>
 </head>
-<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
+    
+    <!-- 1. 响应式导航栏 -->
     <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm h-14 md:h-16 flex items-center">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center">
             <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase">
                 <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
             </div>
-            <div class="overflow-x-auto whitespace-nowrap scrollbar-hide ml-4 flex-grow md:flex-grow-0">
-                <div class="flex space-x-6 text-xs md:text-sm font-bold uppercase tracking-widest text-gray-500">
+            <div class="overflow-x-auto whitespace-nowrap scrollbar-hide ml-4">
+                <div class="flex space-x-6 text-xs md:text-sm font-bold uppercase tracking-widest text-gray-400">
                     {{ #widgetMenuList }}
                     <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
                     {{ /widgetMenuList }}
@@ -39,16 +44,17 @@
         </div>
     </nav>
 
-    <header class="bg-gray-50 dark:bg-gray-900/50 py-10 md:py-20 border-b border-gray-100 dark:border-gray-900">
-        <div class="max-w-6xl mx-auto px-4">
+    <!-- 2. 作者 Hero 巨幕区 -->
+    <header class="bg-gray-50 dark:bg-gray-900/50 py-10 md:py-20 border-b border-gray-100 dark:border-gray-900 text-center md:text-left">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16">
                 <div class="w-40 h-40 md:w-64 md:h-80 flex-shrink-0">
-                    <img src="{{ profile.avatar }}" class="w-full h-full object-cover shadow-2xl rounded-sm grayscale hover:grayscale-0 transition duration-700">
+                    <img src="{{ profile.avatar }}" class="w-full h-full object-cover shadow-2xl rounded-sm grayscale hover:grayscale-0 transition duration-700" alt="Avatar">
                 </div>
-                <div class="flex-grow text-center md:text-left">
+                <div class="flex-grow">
                     <h2 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter">{{ profile.name }}</h2>
-                    <p class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.2em] text-xs md:text-sm mb-6 underline decoration-4 underline-offset-8">EDITORIAL DIRECTOR</p>
-                    <div class="max-w-2xl text-gray-600 dark:text-gray-400 text-base md:text-xl leading-relaxed italic mb-8 font-medium">
+                    <p class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.2em] text-xs md:text-sm mb-6 underline decoration-4 underline-offset-8">Editorial Creator</p>
+                    <div class="max-w-2xl text-gray-600 dark:text-gray-400 text-base md:text-xl leading-relaxed italic mb-8">
                         "{{ profile.bio }}"
                     </div>
                     <div class="flex flex-wrap justify-center md:justify-start gap-3">
@@ -56,9 +62,7 @@
                         <a href="{{ url }}" target="_blank" class="group relative px-4 py-2 border border-gray-200 dark:border-gray-800 text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition">
                             {{ platform }}
                             {{ #isQR }}
-                            <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50">
-                                <img src="{{ url }}" class="w-32 h-32 max-w-none">
-                            </div>
+                            <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50"><img src="{{ url }}" class="w-32 h-32 max-w-none"></div>
                             {{ /isQR }}
                         </a>
                         {{ /profile.socials }}
@@ -68,6 +72,7 @@
         </div>
     </header>
 
+    <!-- 3. 文章网格矩阵 -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div class="section-divider">
             <span class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400">LATEST STORIES</span>
@@ -92,12 +97,14 @@
             </article>
             {{ /articleList }}
         </div>
+
         <nav class="mt-24 flex justify-center gap-12 border-t border-gray-100 dark:border-gray-900 pt-12">
             {{ #pageNewer }}<a href="{{ url }}" class="text-[10px] font-black uppercase tracking-widest hover:text-blue-600">← Newer</a>{{ /pageNewer }}
             {{ #pageOlder }}<a href="{{ url }}" class="text-[10px] font-black uppercase tracking-widest hover:text-blue-600">Older →</a>{{ /pageOlder }}
         </nav>
     </main>
 
+    <!-- 4. 杂志风页脚 -->
     <footer class="bg-gray-50 dark:bg-gray-950 border-t border-gray-100 dark:border-gray-900 py-16 md:py-24">
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-center md:text-left">
@@ -106,7 +113,7 @@
                     <p class="text-gray-500 text-sm max-w-sm mx-auto md:mx-0">{{ siteDescription }}</p>
                 </div>
                 <div>
-                    <h4 class="text-[10px] font-black uppercase tracking-widest mb-6 text-gray-400">Categories</h4>
+                    <h4 class="text-[10px] font-black uppercase tracking-widest mb-6 text-gray-400">Explore</h4>
                     <ul class="space-y-3 text-xs font-bold uppercase tracking-widest">
                         {{ #widgetCategoryList }}
                         <li><a href="/category/{{.}}" class="hover:text-blue-600 transition">{{.}}</a></li>
