@@ -15,16 +15,15 @@
     </script>
     <style>
         body { font-family: {{{ fontSans }}} !important; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        /* 强行对齐所有标题字体 */
         h1, h2, h3, h4, .font-sans { font-family: {{{ fontSans }}} !important; }
         .prose { font-family: {{{ fontSans }}} !important; max-width: none; }
-        .prose img { border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin: 2rem auto; border: 1px solid #eee; }
+        .prose img { border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin: 1.5rem auto; border: 1px solid #eee; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen">
-    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 text-sm font-bold">
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 text-sm font-bold">
         <div class="max-w-5xl mx-auto px-4">
             <div class="flex flex-row justify-between h-14 md:h-16 items-center gap-4">
                 <div class="font-bold text-lg md:text-xl border-b-2 border-blue-500 whitespace-nowrap leading-none"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
@@ -47,38 +46,38 @@
                 </div>
                 {{ /articleSingle.img }}
                 <article>
-                    <header class="mb-10 md:mb-14 text-gray-900 dark:text-white">
+                    <header class="mb-10 md:mb-14 text-gray-900 dark:text-white font-sans">
                         <div class="flex flex-wrap items-center gap-3 mb-6 uppercase tracking-widest font-bold">
                             {{ #articleSingle.category }}
                             <a href="/category/{{.}}" class="text-[11px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">{{.}}</a>
                             {{ /articleSingle.category }}
                             <time class="text-xs text-gray-400 font-bold tracking-tight">📅 {{ articleSingle.createDate10 }}</time>
-                            <span class="text-xs text-blue-500 ml-1 font-black underline decoration-2">👁️ {{ articleSingle.viewCount }}</span>
+                            <span class="text-xs text-blue-500 font-black underline decoration-2">👁️ {{ articleSingle.viewCount }}</span>
                         </div>
                         <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-6 md:mb-10 leading-tight">
                             {{ &articleSingle.title }}
                         </h1>
                         <div class="flex items-center gap-4 py-6 border-y border-gray-100 dark:border-gray-800">
-                            <div class="w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-blue-500/20 uppercase">{{ articleSingle.author.0 }}</div>
-                            <div><p class="text-lg font-bold leading-none text-gray-900 dark:text-white">{{ articleSingle.author }}</p><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-blue-500 mt-2">Verified Author</p></div>
+                            <div class="w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-2xl shadow-lg uppercase">{{ articleSingle.author.0 }}</div>
+                            <div><p class="text-lg font-bold text-gray-900 dark:text-white leading-none">{{ articleSingle.author }}</p><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-blue-500 mt-2">Verified Author</p></div>
                         </div>
                     </header>
+                    <!-- 排版优化：prose-base (16px) 手机, prose-xl (20px) 电脑 -->
                     <div class="prose prose-base sm:prose-lg md:prose-xl dark:prose-invert prose-blue prose-headings:font-black prose-a:text-blue-600">
                         {{ &articleSingle.contentHtml }}
                     </div>
                 </article>
-                <!-- 下篇导航已在 index 中同步字号 -->
                 <nav class="mt-16 md:mt-24 grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-100 dark:border-gray-800 pt-12 text-gray-800 dark:text-gray-200">
                     {{ #articleNewer }}
                     <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">← Previous Article</span>
-                        <p class="font-bold group-hover:text-blue-600 transition line-clamp-1 text-base md:text-xl leading-snug">{{ &title }}</p>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">← Previous</span>
+                        <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-base md:text-xl leading-snug">{{ &title }}</p>
                     </a>
                     {{ /articleNewer }}
                     {{ #articleOlder }}
                     <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl hover:border-blue-500 shadow-sm transition text-right">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Next Article →</span>
-                        <p class="font-bold group-hover:text-blue-600 transition line-clamp-1 text-base md:text-xl leading-snug">{{ &title }}</p>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Next →</span>
+                        <p class="font-extrabold text-gray-900 dark:text-white group-hover:text-blue-600 transition line-clamp-1 text-base md:text-xl leading-snug">{{ &title }}</p>
                     </a>
                     {{ /articleOlder }}
                 </nav>
@@ -96,9 +95,9 @@
                                     {{ #img }}<img src="{{ &img }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">{{ /img }}
                                     {{ ^img }}<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold bg-gray-100 dark:bg-gray-800 italic">{{ createDate10 }}</div>{{ /img }}
                                 </div>
-                                <div class="flex-grow text-gray-800 dark:text-gray-200">
-                                    <span class="text-sm md:text-base font-bold group-hover:text-blue-600 transition line-clamp-2 leading-tight">{{ &title }}</span>
-                                    <div class="text-[11px] text-gray-400 mt-2 flex items-center gap-2 font-medium uppercase">
+                                <div class="flex-grow text-gray-800 dark:text-gray-200 leading-tight">
+                                    <span class="text-sm md:text-base font-bold group-hover:text-blue-600 transition line-clamp-2 leading-snug">{{ &title }}</span>
+                                    <div class="text-[10px] text-gray-400 mt-2 flex items-center gap-2 font-medium uppercase tracking-tight">
                                         <span>👁️ {{ viewCount }}</span><span>•</span><span>{{ createDate10 }}</span>
                                     </div>
                                 </div>
@@ -110,5 +109,10 @@
             </aside>
         </div>
     </main>
+    <footer class="mt-24 py-12 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-400 font-bold uppercase tracking-widest">
+        Powered by Cloudflare Workers
+    </footer>
+    <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });</script>
 </body>
 </html>
