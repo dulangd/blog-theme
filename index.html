@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ title }}</title>
-    <!-- 强力注入字体变量 -->
     <link rel="stylesheet" href="{{{ fontUrl }}}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=typography,line-clamp"></script>
@@ -25,7 +24,6 @@
         * { font-family: {{{ fontSans }}} !important; }
         .serif-title { font-family: 'Noto Serif SC', serif !important; font-weight: 900; }
         body { -webkit-font-smoothing: antialiased; }
-        /* 强制 3 行截断并显示省略号 */
         .clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -36,17 +34,21 @@
 </head>
 <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
     
-    <!-- 1. 响应式导航栏 -->
-    <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm h-14 md:h-16 flex items-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center text-sm md:text-base">
-            <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase leading-none serif-title">
-                <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
-            </div>
-            <div class="overflow-x-auto whitespace-nowrap scrollbar-hide ml-4 flex-grow md:flex-grow-0 text-right">
-                <div class="flex space-x-6 text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-400">
-                    {{ #widgetMenuList }}
-                    <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
-                    {{ /widgetMenuList }}
+    <!-- 1. 响应式导航栏：移动端垂直堆叠，防止挤压 -->
+    <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
+                <!-- 网站名称：在移动端始终保持完整 -->
+                <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap">
+                    <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
+                </div>
+                <!-- 导航菜单：在移动端位于名称下方并水平滚动 -->
+                <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
+                    <div class="flex space-x-6 justify-center md:justify-end text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
+                        {{ #widgetMenuList }}
+                        <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
+                        {{ /widgetMenuList }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,7 +82,7 @@
 
                     <div class="flex flex-wrap justify-center md:justify-start gap-4">
                         {{ #profile.socials }}
-                        <a href="{{ url }}" target="_blank" class="group relative px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition">
+                        <a href="{{ url }}" target="_blank" class="group relative px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase hover:bg-black hover:text-white transition">
                             {{ platform }}
                             {{ #isQR }}
                             <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50"><img src="{{ url }}" class="w-32 h-32 max-w-none"></div>
@@ -98,11 +100,9 @@
             <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">THE STORIES</span>
         </div>
 
-        <!-- 3. 文章网格矩阵 -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
             {{ #articleList }}
-            <article class="flex flex-col h-full group">
-                <!-- 封面图：固定正方形比例 -->
+            <article class="flex flex-col group">
                 {{ #img }}
                 <div class="aspect-square overflow-hidden mb-6 bg-gray-100 rounded-sm shadow-sm border border-gray-50 dark:border-gray-900">
                     <a href="{{ &url }}">
@@ -111,21 +111,18 @@
                 </div>
                 {{ /img }}
                 
-                <!-- 文章信息区：Flex 填充确保底部对齐 -->
-                <div class="flex flex-col flex-grow text-left">
-                    <!-- 优化 1：分类标签字号加大，左对齐 -->
-                    <div class="text-xs md:text-sm font-black text-blue-600 uppercase tracking-[0.2em] mb-3">
+                <div class="flex flex-col text-left">
+                    <!-- 类别标签：mb-3 -->
+                    <div class="text-xs md:text-sm font-black text-blue-600 uppercase tracking-[0.3em] mb-3">
                         {{ #category }}{{.}}{{ /category }}
                     </div>
-
-                    <!-- 优化 2：标题左对齐，限制 3 行显示，带省略号 -->
-                    <h3 class="text-xl md:text-2xl serif-title leading-tight tracking-tight group-hover:text-gray-500 transition mb-6 clamp-3">
+                    <!-- 标题：mb-3，限制 3 行 -->
+                    <h3 class="text-xl md:text-2xl serif-title leading-tight tracking-tight group-hover:text-gray-500 transition mb-3 clamp-3">
                         <a href="{{ &url }}">{{ &title }}</a>
                     </h3>
-
-                    <!-- 优化 3：发布信息区域固定在底部 -->
-                    <div class="mt-auto flex justify-between items-center gap-4 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest border-t border-gray-50 dark:border-gray-900 pt-4">
-                        <span class="text-left">📅 {{ createDate10 }}</span>
+                    <!-- 底部信息：pt-3 保持对称性 -->
+                    <div class="flex justify-between items-center gap-4 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest border-t border-gray-100 dark:border-gray-900 pt-3">
+                        <span>📅 {{ createDate10 }}</span>
                         <span class="text-right">👁️ {{ viewCount }}</span>
                     </div>
                 </div>
@@ -156,8 +153,8 @@
                 </div>
                 <div class="text-left">
                     <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Connect</h4>
-                    <div class="flex flex-col gap-4 text-xs font-bold uppercase tracking-widest text-blue-600">
-                        {{ #widgetLinkList }}<a href="{{ &url }}" target="_blank" class="hover:underline transition">{{ &title }}</a>{{ /widgetLinkList }}
+                    <div class="flex flex-col gap-4 text-xs font-bold uppercase text-blue-600">
+                        {{ #widgetLinkList }}<a href="{{ &url }}" target="_blank" class="hover:underline transition tracking-widest uppercase">{{ &title }}</a>{{ /widgetLinkList }}
                         <a href="/admin/" class="text-gray-300 italic lowercase tracking-normal">/dashboard</a>
                     </div>
                 </div>
