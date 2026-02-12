@@ -27,93 +27,104 @@
     </style>
 </head>
 <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
-    
-    <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm h-14 md:h-16 flex items-center px-4 md:px-8 justify-between">
-        <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title leading-none"><a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a></div>
-        <div class="flex space-x-6 text-[10px] font-bold uppercase tracking-widest text-gray-400 overflow-x-auto scrollbar-hide">
-            {{ #widgetMenuList }}<a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>{{ /widgetMenuList }}
+
+<!-- 修改点：导航栏结构与首页对齐，支持响应式布局 -->
+<nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
+            <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap leading-none">
+                <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
+            </div>
+            <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
+                <div class="flex space-x-6 justify-center md:justify-end text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    {{ #widgetMenuList }}
+                    <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
+                    {{ /widgetMenuList }}
+                </div>
+            </div>
         </div>
+    </div>
+</nav>
+
+<main class="max-w-3xl mx-auto px-4 py-12 md:py-24">
+    <!-- 文章头部元数据 -->
+    <header class="mb-16 md:mb-24 text-center">
+        <div class="flex justify-center items-center gap-4 mb-8 uppercase tracking-[0.4em] font-black text-[10px]">
+            {{ #articleSingle.category }}<a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 border-b-2 border-blue-100 dark:border-blue-900 pb-1">{{.}}</a>{{ /articleSingle.category }}
+            <span class="text-gray-300">•</span>
+            <span class="text-gray-400">📅 {{ articleSingle.createDate10 }}</span>
+            <span class="text-blue-500 font-black">👁️ {{ articleSingle.viewCount }}</span>
+        </div>
+        <h1 class="text-3xl md:text-6xl serif-title leading-tight mb-16 tracking-tighter text-gray-900 dark:text-white">
+            {{ &articleSingle.title }}
+        </h1>
+        <div class="flex flex-col items-center gap-4 py-10 border-y border-gray-50 dark:border-gray-900">
+            <div class="w-16 h-16 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center font-black text-2xl uppercase shadow-xl italic">{{ articleSingle.author.0 }}</div>
+            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mt-2">By {{ articleSingle.author }}</p>
+        </div>
+    </header>
+
+    <!-- 文章大图 -->
+    {{ #articleSingle.img }}
+    <div class="mb-16 md:mb-24 -mx-4 md:-mx-12 lg:-mx-24">
+        <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover shadow-2xl rounded-sm">
+    </div>
+    {{ /articleSingle.img }}
+
+    <!-- 正文区域 -->
+    <div class="prose dark:prose-invert prose-blue">
+        {{ &articleSingle.contentHtml }}
+    </div>
+
+    <!-- 底部推荐网格 (Related Stories) -->
+    <div class="section-divider">
+        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 italic">More Stories</span>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
+        {{ #widgetRecentlyList }}
+        <article class="group">
+            <div class="aspect-square overflow-hidden mb-4 bg-gray-100 rounded-sm">
+                <a href="{{ &url }}"><img src="{{ &img }}" loading="lazy" class="w-full h-full object-cover transition duration-700 group-hover:scale-105 shadow-sm"></a>
+            </div>
+            <div class="space-y-2">
+                <h4 class="text-sm md:text-base serif-title leading-tight tracking-tight group-hover:text-blue-600 transition line-clamp-2 italic">
+                    <a href="{{ &url }}">{{ &title }}</a>
+                </h4>
+            </div>
+        </article>
+        {{ /widgetRecentlyList }}
+    </div>
+
+    <!-- 上下篇链接 -->
+    <nav class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-800 border border-gray-100 dark:border-gray-800">
+        {{ #articleNewer }}
+        <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 transition">
+            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">← Previous Story</span>
+            <p class="font-bold text-lg tracking-tight leading-snug">{{ &title }}</p>
+        </a>
+        {{ /articleNewer }}
+        {{ #articleOlder }}
+        <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 transition text-right">
+            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">Next Story →</span>
+            <p class="font-bold text-lg tracking-tight leading-snug">{{ &title }}</p>
+        </a>
+        {{ /articleOlder }}
     </nav>
+</main>
 
-    <main class="max-w-3xl mx-auto px-4 py-12 md:py-24">
-        <!-- 文章头部元数据 -->
-        <header class="mb-16 md:mb-24 text-center">
-            <div class="flex justify-center items-center gap-4 mb-8 uppercase tracking-[0.4em] font-black text-[10px]">
-                {{ #articleSingle.category }}<a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 border-b-2 border-blue-100 dark:border-blue-900 pb-1">{{.}}</a>{{ /articleSingle.category }}
-                <span class="text-gray-300">•</span>
-                <span class="text-gray-400">📅 {{ articleSingle.createDate10 }}</span>
-                <span class="text-blue-500 font-black">👁️ {{ articleSingle.viewCount }}</span>
-            </div>
-            <h1 class="text-3xl md:text-6xl serif-title leading-tight mb-16 tracking-tighter text-gray-900 dark:text-white">
-                {{ &articleSingle.title }}
-            </h1>
-            <div class="flex flex-col items-center gap-4 py-10 border-y border-gray-50 dark:border-gray-900">
-                <div class="w-16 h-16 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center font-black text-2xl uppercase shadow-xl italic">{{ articleSingle.author.0 }}</div>
-                <p class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mt-2">By {{ articleSingle.author }}</p>
-            </div>
-        </header>
-
-        <!-- 文章大图 -->
-        {{ #articleSingle.img }}
-        <div class="mb-16 md:mb-24 -mx-4 md:-mx-12 lg:-mx-24">
-            <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover shadow-2xl rounded-sm">
+<footer class="bg-gray-50 dark:bg-gray-950 py-20 text-center border-t border-gray-100 dark:border-gray-900">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-2xl serif-title italic mb-8">{{ siteName }}</h2>
+        <div class="flex justify-center gap-10 text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-10">
+            <a href="/" class="hover:text-black dark:hover:text-white transition">Home</a>
+            <a href="/admin/" class="hover:text-black dark:hover:text-white transition">Dashboard</a>
         </div>
-        {{ /articleSingle.img }}
+        <p class="text-[9px] text-gray-300 font-bold uppercase tracking-widest">&copy; 2024 · Handcrafted with Cloudflare</p>
+    </div>
+</footer>
 
-        <!-- 正文区域 -->
-        <div class="prose dark:prose-invert prose-blue">
-            {{ &articleSingle.contentHtml }}
-        </div>
-
-        <!-- 底部推荐网格 (Related Stories) -->
-        <div class="section-divider">
-            <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 italic">More Stories</span>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
-            {{ #widgetRecentlyList }}
-            <article class="group">
-                <div class="aspect-square overflow-hidden mb-4 bg-gray-100 rounded-sm">
-                    <a href="{{ &url }}"><img src="{{ &img }}" loading="lazy" class="w-full h-full object-cover transition duration-700 group-hover:scale-105 shadow-sm"></a>
-                </div>
-                <div class="space-y-2">
-                    <h4 class="text-sm md:text-base serif-title leading-tight tracking-tight group-hover:text-blue-600 transition line-clamp-2 italic">
-                        <a href="{{ &url }}">{{ &title }}</a>
-                    </h4>
-                </div>
-            </article>
-            {{ /widgetRecentlyList }}
-        </div>
-
-        <!-- 上下篇链接 -->
-        <nav class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-800 border border-gray-100 dark:border-gray-800">
-            {{ #articleNewer }}
-            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 transition">
-                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">← Previous Story</span>
-                <p class="font-bold text-lg tracking-tight leading-snug">{{ &title }}</p>
-            </a>
-            {{ /articleNewer }}
-            {{ #articleOlder }}
-            <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 transition text-right">
-                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">Next Story →</span>
-                <p class="font-bold text-lg tracking-tight leading-snug">{{ &title }}</p>
-            </a>
-            {{ /articleOlder }}
-        </nav>
-    </main>
-
-    <footer class="bg-gray-50 dark:bg-gray-950 py-20 text-center border-t border-gray-100 dark:border-gray-900">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-2xl serif-title italic mb-8">{{ siteName }}</h2>
-            <div class="flex justify-center gap-10 text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-10">
-                <a href="/" class="hover:text-black dark:hover:text-white transition">Home</a>
-                <a href="/admin/" class="hover:text-black dark:hover:text-white transition">Dashboard</a>
-            </div>
-            <p class="text-[9px] text-gray-300 font-bold uppercase tracking-widest">&copy; 2024 · Handcrafted with Cloudflare</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
-    <script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });</script>
+<script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });</script>
 </body>
 </html>
