@@ -23,21 +23,23 @@
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* 核心优化：Hero 背景色全屏填充 */
-        .hero-full-bg { background-color: #fcfaf8; }
-        .dark .hero-full-bg { background-color: #0f172a; }
+        /* 杂志风格 Hero 辅助样式 */
+        .hero-text-block { background-color: #fcfaf8; }
+        .dark .hero-text-block { background-color: #0f172a; }
         .hero-image-ratio { aspect-ratio: 3/2; object-fit: cover; }
     </style>
 </head>
 <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
 
-<!-- 导航栏：保持首页一致字号 -->
+<!-- 导航栏：与首页字号完全保持一致 -->
 <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
+            <!-- 网站名称字号：text-xl md:text-2xl (与首页对齐) -->
             <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap leading-none">
                 <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
             </div>
+            <!-- 导航菜单字号：text-sm md:text-base (与首页对齐) -->
             <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
                 <div class="flex space-x-6 justify-center md:justify-end text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
                     {{ #widgetMenuList }}
@@ -49,43 +51,34 @@
     </div>
 </nav>
 
-<!-- 优化点：Hero 区背景应用到 section 标签以实现全屏填充宽度 -->
-<section class="hero-full-bg border-b border-gray-100 dark:border-gray-900">
+<!-- 杂志风 Hero 区：左右分割布局 -->
+<section class="border-b border-gray-100 dark:border-gray-900">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row">
         <!-- 左侧文字信息区 -->
-        <div class="lg:w-1/2 p-8 md:p-16 lg:p-24 flex flex-col justify-center">
-            <!-- 限制内容宽度不超出标题 -->
-            <div class="inline-block w-full lg:max-w-fit">
-                <div class="mb-6">
-                    {{ #articleSingle.category }}
-                    <a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs border-b border-blue-200 pb-1">
-                        {{.}}
-                    </a>
-                    {{ /articleSingle.category }}
-                </div>
-                <h1 class="text-3xl md:text-5xl lg:text-6xl serif-title leading-tight tracking-tighter mb-10 text-gray-900 dark:text-white">
-                    {{ &articleSingle.title }}
-                </h1>
-                
-                <!-- 优化点：作者信息单独一行 -->
-                <div class="text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white italic mb-4">
-                    <span class="text-gray-400 not-italic mr-1">WRITTEN BY</span> {{ articleSingle.author }}
-                </div>
-                
-                <!-- 优化点：日期和浏览量在作者下方，且左右对齐，且带顶部分割线 -->
-                <div class="flex justify-between items-center text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-4">
-                    <time>📅 {{ articleSingle.createDate10 }}</time>
-                    <span class="text-blue-500">👁️ {{ articleSingle.viewCount }}</span>
-                </div>
+        <div class="lg:w-1/2 p-8 md:p-16 lg:p-24 hero-text-block flex flex-col justify-center">
+            <div class="mb-6">
+                {{ #articleSingle.category }}
+                <a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs border-b border-blue-200 pb-1">
+                    {{.}}
+                </a>
+                {{ /articleSingle.category }}
+            </div>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl serif-title leading-tight tracking-tighter mb-10 text-gray-900 dark:text-white">
+                {{ &articleSingle.title }}
+            </h1>
+            <div class="flex items-center gap-6 text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400">
+                <time>📅 {{ articleSingle.createDate10 }}</time>
+                <span>WRITTEN BY <span class="text-gray-900 dark:text-white italic ml-1">{{ articleSingle.author }}</span></span>
+                <span class="text-blue-500">👁️ {{ articleSingle.viewCount }}</span>
             </div>
         </div>
         <!-- 右侧大图区 -->
-        <div class="lg:w-1/2 overflow-hidden bg-white dark:bg-gray-900">
+        <div class="lg:w-1/2 overflow-hidden">
             {{ #articleSingle.img }}
             <img src="{{ &articleSingle.img }}" class="w-full h-full hero-image-ratio transition duration-700 hover:scale-105" alt="Cover Image">
             {{ /articleSingle.img }}
             {{ ^articleSingle.img }}
-            <div class="w-full h-full min-h-[300px] flex items-center justify-center italic text-gray-300">No Image Provided</div>
+            <div class="w-full h-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center italic text-gray-300">No Image</div>
             {{ /articleSingle.img }}
         </div>
     </div>
