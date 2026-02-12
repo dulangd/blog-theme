@@ -6,7 +6,7 @@
     <title>{{ articleSingle.title }} - {{ siteName }}</title>
     <link rel="stylesheet" href="{{{ fontUrl }}}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography,line-clamp"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <script>
         tailwind.config = {
@@ -19,24 +19,29 @@
         .serif-title { font-family: 'Noto Serif SC', serif !important; font-weight: 900; }
         body { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         .prose { font-family: {{{ fontSans }}} !important; max-width: none; font-size: 1.1rem; line-height: 2; }
-        .prose img { border-radius: 0.5rem; margin: 3rem auto; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        .prose img { border-radius: 4px; margin: 2rem auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        .section-divider { display: flex; align-items: center; margin: 4rem 0; }
-        .section-divider::after { content: ""; flex: 1; height: 1px; background: #eee; margin-left: 1rem; }
+        
+        /* 杂志风格 Hero 辅助样式 */
+        .hero-text-block { background-color: #fcfaf8; }
+        .dark .hero-text-block { background-color: #0f172a; }
+        .hero-image-ratio { aspect-ratio: 3/2; object-fit: cover; }
     </style>
 </head>
-<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
+<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
 
-<!-- 修改点：导航栏结构与首页对齐，支持响应式布局 -->
+<!-- 导航栏：与首页字号完全保持一致 -->
 <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
+            <!-- 网站名称字号：text-xl md:text-2xl (与首页对齐) -->
             <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap leading-none">
                 <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
             </div>
+            <!-- 导航菜单字号：text-sm md:text-base (与首页对齐) -->
             <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
-                <div class="flex space-x-6 justify-center md:justify-end text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                <div class="flex space-x-6 justify-center md:justify-end text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
                     {{ #widgetMenuList }}
                     <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
                     {{ /widgetMenuList }}
@@ -46,71 +51,114 @@
     </div>
 </nav>
 
-<main class="max-w-3xl mx-auto px-4 py-12 md:py-24">
-    <!-- 文章头部元数据 -->
-    <header class="mb-16 md:mb-24 text-center">
-        <div class="flex justify-center items-center gap-4 mb-8 uppercase tracking-[0.4em] font-black text-[10px]">
-            {{ #articleSingle.category }}<a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 border-b-2 border-blue-100 dark:border-blue-900 pb-1">{{.}}</a>{{ /articleSingle.category }}
-            <span class="text-gray-300">•</span>
-            <span class="text-gray-400">📅 {{ articleSingle.createDate10 }}</span>
-            <span class="text-blue-500 font-black">👁️ {{ articleSingle.viewCount }}</span>
-        </div>
-        <h1 class="text-3xl md:text-6xl serif-title leading-tight mb-16 tracking-tighter text-gray-900 dark:text-white">
-            {{ &articleSingle.title }}
-        </h1>
-        <div class="flex flex-col items-center gap-4 py-10 border-y border-gray-50 dark:border-gray-900">
-            <div class="w-16 h-16 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center font-black text-2xl uppercase shadow-xl italic">{{ articleSingle.author.0 }}</div>
-            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mt-2">By {{ articleSingle.author }}</p>
-        </div>
-    </header>
-
-    <!-- 文章大图 -->
-    {{ #articleSingle.img }}
-    <div class="mb-16 md:mb-24 -mx-4 md:-mx-12 lg:-mx-24">
-        <img src="{{ &articleSingle.img }}" class="w-full h-auto object-cover shadow-2xl rounded-sm">
-    </div>
-    {{ /articleSingle.img }}
-
-    <!-- 正文区域 -->
-    <div class="prose dark:prose-invert prose-blue">
-        {{ &articleSingle.contentHtml }}
-    </div>
-
-    <!-- 底部推荐网格 (Related Stories) -->
-    <div class="section-divider">
-        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 italic">More Stories</span>
-    </div>
-
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
-        {{ #widgetRecentlyList }}
-        <article class="group">
-            <div class="aspect-square overflow-hidden mb-4 bg-gray-100 rounded-sm">
-                <a href="{{ &url }}"><img src="{{ &img }}" loading="lazy" class="w-full h-full object-cover transition duration-700 group-hover:scale-105 shadow-sm"></a>
+<!-- 杂志风 Hero 区：左右分割布局 -->
+<section class="border-b border-gray-100 dark:border-gray-900">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row">
+        <!-- 左侧文字信息区 -->
+        <div class="lg:w-1/2 p-8 md:p-16 lg:p-24 hero-text-block flex flex-col justify-center">
+            <div class="mb-6">
+                {{ #articleSingle.category }}
+                <a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs border-b border-blue-200 pb-1">
+                    {{.}}
+                </a>
+                {{ /articleSingle.category }}
             </div>
-            <div class="space-y-2">
-                <h4 class="text-sm md:text-base serif-title leading-tight tracking-tight group-hover:text-blue-600 transition line-clamp-2 italic">
-                    <a href="{{ &url }}">{{ &title }}</a>
-                </h4>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl serif-title leading-tight tracking-tighter mb-10 text-gray-900 dark:text-white">
+                {{ &articleSingle.title }}
+            </h1>
+            <div class="flex items-center gap-6 text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400">
+                <time>📅 {{ articleSingle.createDate10 }}</time>
+                <span>WRITTEN BY <span class="text-gray-900 dark:text-white italic ml-1">{{ articleSingle.author }}</span></span>
+                <span class="text-blue-500">👁️ {{ articleSingle.viewCount }}</span>
             </div>
+        </div>
+        <!-- 右侧大图区 -->
+        <div class="lg:w-1/2 overflow-hidden">
+            {{ #articleSingle.img }}
+            <img src="{{ &articleSingle.img }}" class="w-full h-full hero-image-ratio transition duration-700 hover:scale-105" alt="Cover Image">
+            {{ /articleSingle.img }}
+            {{ ^articleSingle.img }}
+            <div class="w-full h-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center italic text-gray-300">No Image</div>
+            {{ /articleSingle.img }}
+        </div>
+    </div>
+</section>
+
+<main class="max-w-7xl mx-auto px-4 py-16">
+    <div class="flex flex-col lg:flex-row gap-16">
+        
+        <!-- 左侧正文区域 (占 2/3) -->
+        <article class="lg:w-2/3">
+            <div class="prose dark:prose-invert prose-blue max-w-none">
+                {{ &articleSingle.contentHtml }}
+            </div>
+
+            <!-- 上下篇导航 -->
+            <nav class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-800 border border-gray-100 dark:border-gray-800">
+                {{ #articleNewer }}
+                <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-950 hover:bg-gray-50 transition">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-2">← Previous Story</span>
+                    <p class="font-bold text-base tracking-tight leading-snug">{{ &title }}</p>
+                </a>
+                {{ /articleNewer }}
+                {{ #articleOlder }}
+                <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-950 hover:bg-gray-50 transition text-right">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-2">Next Story →</span>
+                    <p class="font-bold text-base tracking-tight leading-snug">{{ &title }}</p>
+                </a>
+                {{ /articleOlder }}
+            </nav>
         </article>
-        {{ /widgetRecentlyList }}
-    </div>
 
-    <!-- 上下篇链接 -->
-    <nav class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-800 border border-gray-100 dark:border-gray-800">
-        {{ #articleNewer }}
-        <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 transition">
-            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">← Previous Story</span>
-            <p class="font-bold text-lg tracking-tight leading-snug">{{ &title }}</p>
-        </a>
-        {{ /articleNewer }}
-        {{ #articleOlder }}
-        <a href="{{ &url }}" class="group p-10 bg-white dark:bg-gray-950 hover:bg-gray-50 transition text-right">
-            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-4">Next Story →</span>
-            <p class="font-bold text-lg tracking-tight leading-snug">{{ &title }}</p>
-        </a>
-        {{ /articleOlder }}
-    </nav>
+        <!-- 右侧侧边栏 (占 1/3) -->
+        <aside class="lg:w-1/3 space-y-12">
+            
+            <!-- 订阅引导区 (Newsletter) -->
+            <div class="p-8 border border-gray-100 dark:border-gray-800 rounded-sm bg-gray-50/50 dark:bg-gray-900/30">
+                <h4 class="serif-title italic text-xl mb-4">Want More Like This?</h4>
+                <p class="text-xs text-gray-500 mb-6 leading-relaxed uppercase tracking-widest">Exclusive content delivered straight to your inbox.</p>
+                <div class="flex">
+                    <input type="email" placeholder="YOUR EMAIL" class="flex-grow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 text-[10px] focus:outline-none focus:border-blue-500">
+                    <button class="bg-black text-white px-6 py-2 text-[10px] font-black uppercase hover:bg-blue-600 transition">JOIN</button>
+                </div>
+            </div>
+
+            <!-- 关联文章列表 (Related Articles) -->
+            <div>
+                <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-8 pb-4 border-b border-gray-100 dark:border-gray-800">Related Articles</h5>
+                <div class="space-y-8">
+                    {{ #relatedArticles }}
+                    <article class="flex gap-4 group">
+                        <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-sm bg-gray-100">
+                            <a href="{{ &url }}">
+                                <img src="{{ &img }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            </a>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <div class="text-[9px] font-black text-blue-600 uppercase tracking-widest mb-1">
+                                {{ #category }}{{.}}{{ /category }}
+                            </div>
+                            <h4 class="text-sm serif-title leading-snug tracking-tight italic group-hover:text-blue-600 transition line-clamp-2">
+                                <a href="{{ &url }}">{{ &title }}</a>
+                            </h4>
+                        </div>
+                    </article>
+                    {{ /relatedArticles }}
+                </div>
+            </div>
+
+            <!-- 侧边栏吸底小部件 (可选) -->
+            <div class="sticky top-24 pt-8 border-t border-gray-100 dark:border-gray-800">
+                <p class="text-[9px] text-gray-300 font-bold uppercase tracking-[0.3em]">Follow the journey on social media</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    {{ #profile.socials }}
+                    <a href="{{ url }}" class="text-[10px] font-black uppercase border border-gray-200 dark:border-gray-800 px-3 py-1 hover:bg-black hover:text-white transition">{{ platform }}</a>
+                    {{ /profile.socials }}
+                </div>
+            </div>
+
+        </aside>
+    </div>
 </main>
 
 <footer class="bg-gray-50 dark:bg-gray-950 py-20 text-center border-t border-gray-100 dark:border-gray-900">
