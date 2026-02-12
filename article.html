@@ -23,21 +23,23 @@
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* 杂志风格 Hero 辅助样式：全屏填充背景 */
-        .hero-section { background-color: #fcfaf8; }
-        .dark .hero-section { background-color: #0f172a; }
+        /* 杂志风格 Hero 辅助样式 */
+        .hero-text-block { background-color: #fcfaf8; }
+        .dark .hero-text-block { background-color: #0f172a; }
         .hero-image-ratio { aspect-ratio: 3/2; object-fit: cover; }
     </style>
 </head>
-<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
+<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
 
-<!-- 导航栏：字号已同步首页 -->
+<!-- 导航栏：与首页字号完全保持一致 -->
 <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
+            <!-- 网站名称字号：text-xl md:text-2xl (与首页对齐) -->
             <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap leading-none">
                 <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
             </div>
+            <!-- 导航菜单字号：text-sm md:text-base (与首页对齐) -->
             <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
                 <div class="flex space-x-6 justify-center md:justify-end text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
                     {{ #widgetMenuList }}
@@ -49,11 +51,11 @@
     </div>
 </nav>
 
-<!-- 修改点 1：Hero 区应用全屏背景 (hero-section 应用于 section) -->
-<section class="hero-section border-b border-gray-100 dark:border-gray-900">
+<!-- 杂志风 Hero 区：左右分割布局 -->
+<section class="border-b border-gray-100 dark:border-gray-900">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row">
-        <!-- 左侧文字区 -->
-        <div class="lg:w-1/2 p-8 md:p-16 lg:p-24 flex flex-col justify-center">
+        <!-- 左侧文字信息区 -->
+        <div class="lg:w-1/2 p-8 md:p-16 lg:p-24 hero-text-block flex flex-col justify-center">
             <div class="mb-6">
                 {{ #articleSingle.category }}
                 <a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs border-b border-blue-200 pb-1">
@@ -64,16 +66,13 @@
             <h1 class="text-3xl md:text-5xl lg:text-6xl serif-title leading-tight tracking-tighter mb-10 text-gray-900 dark:text-white">
                 {{ &articleSingle.title }}
             </h1>
-            <!-- 修改点 2：元数据重排，作者单行，日期浏览量另起一行并左右对齐 -->
-            <div class="flex flex-col gap-4 text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400">
-                <div class="w-full">WRITTEN BY <span class="text-gray-900 dark:text-white italic ml-1">{{ articleSingle.author }}</span></div>
-                <div class="flex justify-between items-center w-full border-t border-gray-200 dark:border-gray-800 pt-4">
-                    <time>📅 {{ articleSingle.createDate10 }}</time>
-                    <span class="text-blue-500">👁️ {{ articleSingle.viewCount }}</span>
-                </div>
+            <div class="flex items-center gap-6 text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400">
+                <time>📅 {{ articleSingle.createDate10 }}</time>
+                <span>WRITTEN BY <span class="text-gray-900 dark:text-white italic ml-1">{{ articleSingle.author }}</span></span>
+                <span class="text-blue-500">👁️ {{ articleSingle.viewCount }}</span>
             </div>
         </div>
-        <!-- 右侧图 -->
+        <!-- 右侧大图区 -->
         <div class="lg:w-1/2 overflow-hidden">
             {{ #articleSingle.img }}
             <img src="{{ &articleSingle.img }}" class="w-full h-full hero-image-ratio transition duration-700 hover:scale-105" alt="Cover Image">
@@ -88,11 +87,13 @@
 <main class="max-w-7xl mx-auto px-4 py-16">
     <div class="flex flex-col lg:flex-row gap-16">
         
+        <!-- 左侧正文区域 (占 2/3) -->
         <article class="lg:w-2/3">
             <div class="prose dark:prose-invert prose-blue max-w-none">
                 {{ &articleSingle.contentHtml }}
             </div>
 
+            <!-- 上下篇导航 -->
             <nav class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-800 border border-gray-100 dark:border-gray-800">
                 {{ #articleNewer }}
                 <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-950 hover:bg-gray-50 transition">
@@ -109,8 +110,10 @@
             </nav>
         </article>
 
+        <!-- 右侧侧边栏 (占 1/3) -->
         <aside class="lg:w-1/3 space-y-12">
             
+            <!-- 订阅引导区 (Newsletter) -->
             <div class="p-8 border border-gray-100 dark:border-gray-800 rounded-sm bg-gray-50/50 dark:bg-gray-900/30">
                 <h4 class="serif-title italic text-xl mb-4">Want More Like This?</h4>
                 <p class="text-xs text-gray-500 mb-6 leading-relaxed uppercase tracking-widest">Exclusive content delivered straight to your inbox.</p>
@@ -120,6 +123,7 @@
                 </div>
             </div>
 
+            <!-- 关联文章列表 (Related Articles) -->
             <div>
                 <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-8 pb-4 border-b border-gray-100 dark:border-gray-800">Related Articles</h5>
                 <div class="space-y-8">
@@ -143,8 +147,9 @@
                 </div>
             </div>
 
+            <!-- 侧边栏吸底小部件 (可选) -->
             <div class="sticky top-24 pt-8 border-t border-gray-100 dark:border-gray-800">
-                <p class="text-[9px] text-gray-300 font-bold uppercase tracking-[0.3em]">Follow the journey</p>
+                <p class="text-[9px] text-gray-300 font-bold uppercase tracking-[0.3em]">Follow the journey on social media</p>
                 <div class="mt-4 flex flex-wrap gap-2">
                     {{ #profile.socials }}
                     <a href="{{ url }}" class="text-[10px] font-black uppercase border border-gray-200 dark:border-gray-800 px-3 py-1 hover:bg-black hover:text-white transition">{{ platform }}</a>
