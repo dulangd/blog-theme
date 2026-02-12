@@ -24,7 +24,17 @@
         * { font-family: {{{ fontSans }}} !important; }
         .serif-title { font-family: 'Noto Serif SC', serif !important; font-weight: 900; }
         body { -webkit-font-smoothing: antialiased; }
-        .clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        /* 强制标题显示为 3 行的高度，即使内容较短 */
+        .fixed-title-height { 
+            display: -webkit-box; 
+            -webkit-line-clamp: 3; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden;
+            /* 基于 leading-tight (1.25) 计算：text-xl 对应 1.25rem * 1.25 * 3 = 4.68rem; text-2xl 对应 1.5rem * 1.25 * 3 = 5.62rem */
+            height: 4.7rem; 
+        }
+        @media (min-width: 768px) { .fixed-title-height { height: 5.7rem; } }
+        
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .section-divider { display: flex; align-items: center; margin: 3rem 0; }
@@ -33,136 +43,130 @@
     </style>
 </head>
 <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
-    
-    <!-- 1. 响应式导航栏：移动端垂直堆叠，防止挤压 -->
-    <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
-                <!-- 网站名称：在移动端始终保持完整 -->
-                <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap">
-                    <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
-                </div>
-                <!-- 导航菜单：在移动端位于名称下方并水平滚动 -->
-                <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
-                    <div class="flex space-x-6 justify-center md:justify-end text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
-                        {{ #widgetMenuList }}
-                        <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
-                        {{ /widgetMenuList }}
-                    </div>
+
+<nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
+            <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap">
+                <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
+            </div>
+            <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
+                <div class="flex space-x-6 justify-center md:justify-end text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
+                    {{ #widgetMenuList }}
+                    <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
+                    {{ /widgetMenuList }}
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- 2. 作者 Hero 巨幕区 -->
-    <header class="bg-gray-50 dark:bg-gray-900/50 py-10 md:py-24 border-b border-gray-100 dark:border-gray-900">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center gap-10 md:gap-20">
-                <div class="w-48 h-64 md:w-64 md:h-80 flex-shrink-0">
-                    <img src="{{ profile.avatar }}" class="w-full h-full object-cover shadow-2xl rounded-sm grayscale hover:grayscale-0 transition duration-700 bg-white" alt="Avatar">
-                </div>
-                <div class="flex-grow text-center md:text-left">
-                    <h2 class="text-4xl md:text-7xl serif-title mb-4 tracking-tighter leading-none">{{ profile.name }}</h2>
-                    <p class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs mb-8">{{ profile.jobTitle }}</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 text-[10px] font-black uppercase tracking-widest border-t border-gray-200 dark:border-gray-800 pt-8">
-                        <div>
-                            <span class="text-gray-400 block mb-1">Location</span>
-                            <span class="text-gray-900 dark:text-white">{{ profile.location }}</span>
-                        </div>
-                        <div>
-                            <span class="text-gray-400 block mb-1">Education</span>
-                            <span class="text-gray-900 dark:text-white">{{ profile.education }}</span>
-                        </div>
-                    </div>
-
-                    <div class="max-w-2xl text-gray-600 dark:text-gray-400 text-base md:text-xl leading-relaxed italic mb-10 font-medium">
-                        "{{ profile.bio }}"
-                    </div>
-
-                    <div class="flex flex-wrap justify-center md:justify-start gap-4">
-                        {{ #profile.socials }}
-                        <a href="{{ url }}" target="_blank" class="group relative px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase hover:bg-black hover:text-white transition">
-                            {{ platform }}
-                            {{ #isQR }}
-                            <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50"><img src="{{ url }}" class="w-32 h-32 max-w-none"></div>
-                            {{ /isQR }}
-                        </a>
-                        {{ /profile.socials }}
-                    </div>
-                </div>
+<header class="bg-gray-50 dark:bg-gray-900/50 py-10 md:py-24 border-b border-gray-100 dark:border-gray-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row items-center gap-10 md:gap-20">
+            <div class="w-48 h-64 md:w-64 md:h-80 flex-shrink-0">
+                <img src="{{ profile.avatar }}" class="w-full h-full object-cover shadow-2xl rounded-sm grayscale hover:grayscale-0 transition duration-700 bg-white" alt="Avatar">
             </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="section-divider">
-            <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">THE STORIES</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
-            {{ #articleList }}
-            <article class="flex flex-col group">
-                {{ #img }}
-                <div class="aspect-square overflow-hidden mb-6 bg-gray-100 rounded-sm shadow-sm border border-gray-50 dark:border-gray-900">
-                    <a href="{{ &url }}">
-                        <img src="{{ &img }}" loading="lazy" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
-                    </a>
-                </div>
-                {{ /img }}
+            <div class="flex-grow text-center md:text-left">
+                <h2 class="text-4xl md:text-7xl serif-title mb-4 tracking-tighter leading-none">{{ profile.name }}</h2>
+                <p class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs mb-8">{{ profile.jobTitle }}</p>
                 
-                <div class="flex flex-col text-left">
-                    <!-- 类别标签：mb-3 -->
-                    <div class="text-xs md:text-sm font-black text-blue-600 uppercase tracking-[0.3em] mb-3">
-                        {{ #category }}{{.}}{{ /category }}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 text-[10px] font-black uppercase tracking-widest border-t border-gray-200 dark:border-gray-800 pt-8">
+                    <div>
+                        <span class="text-gray-400 block mb-1">Location</span>
+                        <span class="text-gray-900 dark:text-white">{{ profile.location }}</span>
                     </div>
-                    <!-- 标题：mb-3，限制 3 行 -->
-                    <h3 class="text-xl md:text-2xl serif-title leading-tight tracking-tight group-hover:text-gray-500 transition mb-3 clamp-3">
-                        <a href="{{ &url }}">{{ &title }}</a>
-                    </h3>
-                    <!-- 底部信息：pt-3 保持对称性 -->
-                    <div class="flex justify-between items-center gap-4 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest border-t border-gray-100 dark:border-gray-900 pt-3">
-                        <span>📅 {{ createDate10 }}</span>
-                        <span class="text-right">👁️ {{ viewCount }}</span>
+                    <div>
+                        <span class="text-gray-400 block mb-1">Education</span>
+                        <span class="text-gray-900 dark:text-white">{{ profile.education }}</span>
                     </div>
                 </div>
-            </article>
-            {{ /articleList }}
-        </div>
 
-        <nav class="mt-32 flex justify-center gap-16 border-t border-gray-100 dark:border-gray-900 pt-16 font-black text-[10px] tracking-[0.3em] uppercase">
-            {{ #pageNewer }}<a href="{{ url }}" class="hover:text-blue-600 transition">← Newer</a>{{ /pageNewer }}
-            {{ #pageOlder }}<a href="{{ url }}" class="hover:text-blue-600 transition">Older →</a>{{ /pageOlder }}
-        </nav>
-    </main>
+                <div class="max-w-2xl text-gray-600 dark:text-gray-400 text-base md:text-xl leading-relaxed italic mb-10 font-medium">
+                    "{{ profile.bio }}"
+                </div>
 
-    <footer class="bg-gray-50 dark:bg-gray-950 py-24 border-t border-gray-100 dark:border-gray-900">
-        <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
-                <div class="md:col-span-2 text-left">
-                    <h2 class="text-3xl serif-title italic mb-8 text-gray-900 dark:text-white">{{ siteName }}</h2>
-                    <p class="text-gray-500 text-sm max-w-sm leading-loose">{{ siteDescription }}</p>
-                </div>
-                <div class="text-left">
-                    <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Explore</h4>
-                    <ul class="space-y-4 text-xs font-bold uppercase tracking-widest">
-                        {{ #widgetCategoryList }}
-                        <li><a href="/category/{{.}}" class="hover:text-blue-600 transition">{{.}}</a></li>
-                        {{ /widgetCategoryList }}
-                    </ul>
-                </div>
-                <div class="text-left">
-                    <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Connect</h4>
-                    <div class="flex flex-col gap-4 text-xs font-bold uppercase text-blue-600">
-                        {{ #widgetLinkList }}<a href="{{ &url }}" target="_blank" class="hover:underline transition tracking-widest uppercase">{{ &title }}</a>{{ /widgetLinkList }}
-                        <a href="/admin/" class="text-gray-300 italic lowercase tracking-normal">/dashboard</a>
-                    </div>
+                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                    {{ #profile.socials }}
+                    <a href="{{ url }}" target="_blank" class="group relative px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase hover:bg-black hover:text-white transition">
+                        {{ platform }}
+                        {{ #isQR }}
+                        <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50"><img src="{{ url }}" class="w-32 h-32 max-w-none"></div>
+                        {{ /isQR }}
+                    </a>
+                    {{ /profile.socials }}
                 </div>
             </div>
-            <div class="text-center text-[9px] text-gray-400 font-bold uppercase tracking-[0.4em] border-t border-gray-100 dark:border-gray-800 pt-16">
-                &copy; 2024 · All Rights Reserved
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="section-divider">
+        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">THE STORIES</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+        {{ #articleList }}
+        <article class="flex flex-col group">
+            {{ #img }}
+            <div class="aspect-square overflow-hidden mb-6 bg-gray-100 rounded-sm shadow-sm border border-gray-50 dark:border-gray-900">
+                <a href="{{ &url }}">
+                    <img src="{{ &img }}" loading="lazy" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
+                </a>
+            </div>
+            {{ /img }}
+            
+            <div class="flex flex-col text-left">
+                <div class="text-xs md:text-sm font-black text-blue-600 uppercase tracking-[0.3em] mb-3">
+                    {{ #category }}{{.}}{{ /category }}
+                </div>
+                <!-- 修改点：使用了 fixed-title-height 类确保高度固定 -->
+                <h3 class="text-xl md:text-2xl serif-title leading-tight tracking-tight group-hover:text-gray-500 transition mb-3 fixed-title-height">
+                    <a href="{{ &url }}">{{ &title }}</a>
+                </h3>
+                <div class="flex justify-between items-center gap-4 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest border-t border-gray-100 dark:border-gray-900 pt-3">
+                    <span>📅 {{ createDate10 }}</span>
+                    <span class="text-right">👁️ {{ viewCount }}</span>
+                </div>
+            </div>
+        </article>
+        {{ /articleList }}
+    </div>
+
+    <nav class="mt-32 flex justify-center gap-16 border-t border-gray-100 dark:border-gray-900 pt-16 font-black text-[10px] tracking-[0.3em] uppercase">
+        {{ #pageNewer }}<a href="{{ url }}" class="hover:text-blue-600 transition">← Newer</a>{{ /pageNewer }}
+        {{ #pageOlder }}<a href="{{ url }}" class="hover:text-blue-600 transition">Older →</a>{{ /pageOlder }}
+    </nav>
+</main>
+
+<footer class="bg-gray-50 dark:bg-gray-950 py-24 border-t border-gray-100 dark:border-gray-900">
+    <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+            <div class="md:col-span-2 text-left">
+                <h2 class="text-3xl serif-title italic mb-8 text-gray-900 dark:text-white">{{ siteName }}</h2>
+                <p class="text-gray-500 text-sm max-w-sm leading-loose">{{ siteDescription }}</p>
+            </div>
+            <div class="text-left">
+                <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Explore</h4>
+                <ul class="space-y-4 text-xs font-bold uppercase tracking-widest">
+                    {{ #widgetCategoryList }}
+                    <li><a href="/category/{{.}}" class="hover:text-blue-600 transition">{{.}}</a></li>
+                    {{ /widgetCategoryList }}
+                </ul>
+            </div>
+            <div class="text-left">
+                <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Connect</h4>
+                <div class="flex flex-col gap-4 text-xs font-bold uppercase text-blue-600">
+                    {{ #widgetLinkList }}<a href="{{ &url }}" target="_blank" class="hover:underline transition tracking-widest uppercase">{{ &title }}</a>{{ /widgetLinkList }}
+                    <a href="/admin/" class="text-gray-300 italic lowercase tracking-normal">/dashboard</a>
+                </div>
             </div>
         </div>
-    </footer>
+        <div class="text-center text-[9px] text-gray-400 font-bold uppercase tracking-[0.4em] border-t border-gray-100 dark:border-gray-800 pt-16">
+            &copy; 2024 · All Rights Reserved
+        </div>
+    </div>
+</footer>
 </body>
 </html>
