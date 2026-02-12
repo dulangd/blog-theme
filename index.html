@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ title }}</title>
+    <!-- 新增 SEO 标签 -->
+    <meta name="description" content="{{ siteDescription }}">
+    <meta name="keywords" content="{{ siteKeywords }}">
     <link rel="stylesheet" href="{{{ fontUrl }}}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=typography,line-clamp"></script>
@@ -22,10 +25,10 @@
     </script>
     <style>
         * { font-family: {{{ fontSans }}} !important; }
-        .serif-title { font-family: 'Noto Serif SC', serif !important; font-weight: 900; }
+        。serif-title { font-family: 'Noto Serif SC', serif !important; font-weight: 900; }
         body { -webkit-font-smoothing: antialiased; }
         /* 强制标题显示为 3 行的高度，即使内容较短 */
-        .fixed-title-height { 
+        。fixed-title-height { 
             display: -webkit-box; 
             -webkit-line-clamp: 3; 
             -webkit-box-orient: vertical; 
