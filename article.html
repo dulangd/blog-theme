@@ -152,7 +152,7 @@
                 <p class="text-xs text-gray-500 mb-6 leading-relaxed uppercase tracking-widest">Exclusive content delivered straight to your inbox.</p>
                 <div class="flex">
                     <input type="email" id="sub-email" placeholder="YOUR EMAIL" class="flex-grow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 text-[10px] focus:outline-none focus:border-blue-500">
-                    <button onclick="subscribeEmail()" class="bg-black text-white px-6 py-2 text-[10px] font-black uppercase hover:bg-blue-600 transition">JOIN</button>
+                    <button onclick="subscribeEmail(event)" class="bg-black text-white px-6 py-2 text-[10px] font-black uppercase hover:bg-blue-600 transition">JOIN</button>
                 </div>
             </div>
 
@@ -207,7 +207,7 @@
 
 <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
 <script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });
-async function subscribeEmail() {
+async function subscribeEmail(event) {
     const emailEl = document.getElementById('sub-email');
     const email = emailEl.value;
     if(!email) return;
