@@ -208,6 +208,8 @@
 <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
 <script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });
 async function subscribeEmail(event) {
+    e.preventDefault(); // 防止默认行为
+    const btn = e.target;
     const emailEl = document.getElementById('sub-email');
     const email = emailEl.value;
     if(!email) return;
