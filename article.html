@@ -151,8 +151,8 @@
                 <h4 class="serif-title italic text-xl mb-4">Want More Like This?</h4>
                 <p class="text-xs text-gray-500 mb-6 leading-relaxed uppercase tracking-widest">Exclusive content delivered straight to your inbox.</p>
                 <div class="flex">
-                    <input type="email" placeholder="YOUR EMAIL" class="flex-grow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 text-[10px] focus:outline-none focus:border-blue-500">
-                    <button class="bg-black text-white px-6 py-2 text-[10px] font-black uppercase hover:bg-blue-600 transition">JOIN</button>
+                    <input type="email" id="sub-email" placeholder="YOUR EMAIL" class="flex-grow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 text-[10px] focus:outline-none focus:border-blue-500">
+                    <button onclick="subscribeEmail()" class="bg-black text-white px-6 py-2 text-[10px] font-black uppercase hover:bg-blue-600 transition">JOIN</button>
                 </div>
             </div>
 
@@ -206,6 +206,27 @@
 </footer>
 
 <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
-<script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });</script>
+<script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });
+async function subscribeEmail() {
+    const emailEl = document.getElementById('sub-email');
+    const email = emailEl.value;
+    if(!email) return;
+    const btn = event.target;
+    const oldText = btn.innerText;
+    btn.innerText = '...';
+    try {
+        const res = await fetch('/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        if (res.ok) {
+            alert('订阅成功！感谢关注。');
+            emailEl.value = '';
+        } else { alert('订阅失败，请稍后重试。'); }
+    } catch (e) { alert('请求出错'); }
+    btn.innerText = oldText;
+}
+</script>
 </body>
 </html>
