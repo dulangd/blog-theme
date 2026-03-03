@@ -208,26 +208,42 @@
 <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
 <script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });
 async function subscribeEmail(event) {
-    e.preventDefault(); // 防止默认行为
-    const btn = e.target;
+    event.preventDefault(); // 防止默认行为
+    
     const emailEl = document.getElementById('sub-email');
     const email = emailEl.value;
     if(!email) return;
-    const btn = event.target;
+
+    // 获取当前点击的按钮
+    const btn = event.currentTarget || event.target;
     const oldText = btn.innerText;
+    
+    // 改变按钮状态
     btn.innerText = '...';
+    btn.disabled = true;
+
     try {
         const res = await fetch('/subscribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email: email })
         });
-        if (res.ok) {
-            alert('订阅成功！感谢关注。');
+        
+        const data = await res.json();
+        
+        if (data.rst) {
+            alert(data.msg || '订阅成功！感谢关注。');
             emailEl.value = '';
-        } else { alert('订阅失败，请稍后重试。'); }
-    } catch (e) { alert('请求出错'); }
-    btn.innerText = oldText;
+        } else { 
+            alert('订阅失败：' + (data.msg || '请稍后重试。')); 
+        }
+    } catch (e) { 
+        alert('网络请求出错，请稍后重试'); 
+    } finally {
+        // 恢复按钮状态
+        btn.innerText = oldText;
+        btn.disabled = false;
+    }
 }
 </script>
 </body>
