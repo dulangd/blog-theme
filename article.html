@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <!-- Article Version: 13.0 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>{{ articleSingle.title }} - {{ siteName }}</title>
-    <!-- [SEO 增量开始] -->
     <meta name="description" content="{{ seoDescription }}">
     <meta name="keywords" content="{{ siteKeywords }}">
     {{ #canonicalUrl }}<link rel="canonical" href="{{ canonicalUrl }}">{{ /canonicalUrl }}
@@ -14,53 +13,176 @@
     {{{ articleDataJSON }}}
     </script>
     {{ /articleDataJSON }}
-    <!-- [SEO 增量结束] -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdn.staticfile.org">
     <link rel="stylesheet" href="{{{ fontUrl }}}">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap">
     <script src="https://cdn.tailwindcss.com?plugins=typography,line-clamp"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { fontFamily: { sans: ["{{{ fontSans }}}"], serif: ['"Noto Serif SC"', 'serif'], },} }
-        }
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: [{{{ fontSans }}}],
+                        serif: ['"Noto Serif SC"', 'serif'],
+                    },
+                },
+            },
+        };
     </script>
     <style>
         * { font-family: {{{ fontSans }}} !important; }
         .serif-title { font-family: 'Noto Serif SC', serif !important; font-weight: 900; }
         body { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        .prose { font-family: {{{ fontSans }}} !important; max-width: none; font-size: 1.1rem; line-height: 2; }
-        .prose img { border-radius: 4px; margin: 2rem auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .prose { font-family: {{{ fontSans }}} !important; max-width: none; font-size: 1.05rem; line-height: 2; }
+        .prose img { border-radius: 4px; margin: 2rem auto; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* 参照 theeverygirl 样式的 Hero 背景填充 */
         .hero-bg-fill { background-color: #fcfaf8; }
         .dark .hero-bg-fill { background-color: #0f172a; }
-        .hero-image-ratio { aspect-ratio: 3/2; object-fit: cover; }
-
-        /* 锁定元数据宽度：不超出标题宽度 */
+        .hero-image-ratio { aspect-ratio: 3 / 2; object-fit: cover; }
         .meta-container { display: inline-block; width: 100%; max-width: fit-content; }
+        .hero-shell {
+            position: relative;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.08), transparent 34%);
+        }
+        .dark .hero-shell {
+            background-image:
+                radial-gradient(circle at top left, rgba(96, 165, 250, 0.12), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(148, 163, 184, 0.08), transparent 34%);
+        }
+        .hero-shell::after {
+            content: "";
+            position: absolute;
+            inset: 1.25rem;
+            border: 1px solid rgba(229, 231, 235, 0.85);
+            pointer-events: none;
+        }
+        .dark .hero-shell::after { border-color: rgba(31, 41, 55, 0.9); }
+        .reading-frame {
+            position: relative;
+            padding: 2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.86);
+            border: 1px solid rgba(229, 231, 235, 0.85);
+            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.06);
+        }
+        .dark .reading-frame {
+            background: rgba(3, 7, 18, 0.76);
+            border-color: rgba(17, 24, 39, 1);
+            box-shadow: none;
+        }
+        @media (min-width: 768px) {
+            .reading-frame { padding: 3rem; }
+            .prose { font-size: 1.12rem; }
+        }
+        .prose p,
+        .prose ul,
+        .prose ol,
+        .prose blockquote,
+        .prose pre,
+        .prose h2,
+        .prose h3 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+        .prose h2,
+        .prose h3,
+        .prose h4 {
+            font-family: 'Noto Serif SC', serif !important;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: inherit;
+        }
+        .prose h2 {
+            font-size: 1.85rem;
+            margin-top: 2.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(229, 231, 235, 0.9);
+        }
+        .dark .prose h2 { border-top-color: rgba(31, 41, 55, 0.9); }
+        .prose a {
+            color: #2563eb;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.45);
+        }
+        .prose a:hover { color: #1d4ed8; }
+        .prose strong { color: inherit; }
+        .prose blockquote {
+            border-left: 0;
+            padding: 1.75rem 1.5rem;
+            font-style: italic;
+            background: rgba(249, 250, 251, 0.95);
+            position: relative;
+        }
+        .dark .prose blockquote { background: rgba(17, 24, 39, 0.85); }
+        .prose blockquote::before {
+            content: "“";
+            position: absolute;
+            top: 0.2rem;
+            left: 1rem;
+            font-size: 3.5rem;
+            line-height: 1;
+            color: rgba(59, 130, 246, 0.25);
+            font-family: 'Noto Serif SC', serif;
+        }
+        .prose pre {
+            padding: 1.25rem;
+            border-radius: 0.125rem;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+        }
+        .sidebar-card {
+            background: rgba(249, 250, 251, 0.72);
+            border: 1px solid rgba(229, 231, 235, 0.9);
+            box-shadow: 0 16px 48px rgba(15, 23, 42, 0.05);
+        }
+        .dark .sidebar-card {
+            background: rgba(3, 7, 18, 0.72);
+            border-color: rgba(17, 24, 39, 1);
+            box-shadow: none;
+        }
+        .subtle-label {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: #9ca3af;
+        }
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            transform: translateY(-200%);
+            background: #111827;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            z-index: 100;
+            transition: transform 0.2s ease;
+        }
+        .skip-link:focus { transform: translateY(0); }
     </style>
     <script>
         var _hmt = _hmt || [];
         (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?ed81d6526f705dfd3e8f0670ecdaca68";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
+            var hm = document.createElement("script");
+            hm.async = true;
+            hm.src = "https://hm.baidu.com/hm.js?ed81d6526f705dfd3e8f0670ecdaca68";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
         })();
     </script>
-
 </head>
 <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+<a href="#main-content" class="skip-link">跳到正文</a>
 
-<!-- 导航栏：与首页字号完全保持一致 -->
-<nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
+<nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm" aria-label="Primary navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
             <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap leading-none">
-                <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
+                <a href="/" class="hover:text-blue-600 transition" aria-label="{{ siteName }} home">{{ siteName }}</a>
             </div>
             <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
                 <div class="flex space-x-6 justify-start md:justify-end px-4 md:px-0 text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
@@ -73,42 +195,51 @@
     </div>
 </nav>
 
-<!-- 杂志风 Hero 区：背景全屏填充 -->
-<section class="hero-bg-fill border-b border-gray-100 dark:border-gray-900">
+<section class="hero-shell hero-bg-fill border-b border-gray-100 dark:border-gray-900">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row">
-        <!-- 左侧文字信息区 -->
+        <div class="absolute inset-x-0 top-0 max-w-7xl mx-auto px-8 md:px-16 lg:px-24 pt-8 md:pt-10 z-10">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.45em] text-blue-600">
+                    <span class="inline-block w-10 h-px bg-blue-600"></span>
+                    <span>Feature Story</span>
+                </div>
+                <p class="max-w-xl text-xs md:text-sm text-gray-500 leading-relaxed md:text-right">{{ siteDescription }}</p>
+            </div>
+        </div>
         <div class="lg:w-1/2 p-8 md:p-16 lg:p-24 flex flex-col justify-center">
-            <!-- 宽度锁定容器：meta-container -->
             <div class="meta-container">
-                <div class="mb-6">
+                <div class="mb-6 pt-12 md:pt-16">
                     {{ #articleSingle.category }}
-                    <a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs border-b border-blue-200 pb-1">
+                    <a href="/category/{{.}}" class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs border-b border-blue-200 pb-1" aria-label="Browse category {{.}}">
                         {{.}}
                     </a>
                     {{ /articleSingle.category }}
                 </div>
-                
+
                 <h1 class="text-3xl md:text-5xl lg:text-6xl serif-title leading-tight tracking-tighter mb-10 text-gray-900 dark:text-white">
                     {{ &articleSingle.title }}
                 </h1>
 
-                <!-- 作者信息：单独一行 -->
                 <div class="text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white italic mb-4">
-                    <span class="text-gray-400 not-italic mr-1 uppercase">written by</span> {{ articleSingle.author }}
+                    <span class="text-gray-400 not-italic mr-1 uppercase">Written By</span> {{ articleSingle.author }}
                 </div>
 
-                <!-- 日期与浏览量：左右对齐，且宽度不超过上方标题 -->
                 <div class="flex justify-between items-center text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-4">
-                    <time>📅 {{ articleSingle.createDate10 }}</time>
-                    <span class="text-blue-500">👁️ {{ articleSingle.viewCount }}</span>
+                    <time datetime="{{ articleSingle.createDate10 }}">&#128197; {{ articleSingle.createDate10 }}</time>
+                    <span class="text-blue-500">&#128065; {{ articleSingle.viewCount }}</span>
                 </div>
             </div>
         </div>
-        
-        <!-- 右侧大图区 -->
+
         <div class="lg:w-1/2 overflow-hidden bg-white dark:bg-gray-900">
             {{ #articleSingle.img }}
-            <img src="{{ &articleSingle.img }}" class="w-full h-full hero-image-ratio transition duration-700 hover:scale-105" alt="Cover Image">
+            <div class="relative h-full min-h-[320px] lg:min-h-full">
+                <img src="{{ &articleSingle.img }}" class="w-full h-full hero-image-ratio transition duration-700 hover:scale-105" alt="{{ &articleSingle.title }} cover image" decoding="async" fetchpriority="high">
+                <div class="absolute bottom-6 left-6 right-6 md:right-auto bg-white/95 dark:bg-gray-950/90 border border-gray-200 dark:border-gray-800 px-5 py-4 shadow-xl">
+                    <p class="subtle-label mb-2">Reading Notes</p>
+                    <p class="text-xs md:text-sm text-gray-500 leading-relaxed">A closer look at ideas, craft, and the systems behind thoughtful publishing.</p>
+                </div>
+            </div>
             {{ /articleSingle.img }}
             {{ ^articleSingle.img }}
             <div class="w-full h-full min-h-[300px] flex items-center justify-center italic text-gray-300">No Image</div>
@@ -117,54 +248,59 @@
     </div>
 </section>
 
-<main class="max-w-7xl mx-auto px-4 py-16">
-    <div class="flex flex-col lg:flex-row gap-16">
-        
-        <!-- 左侧正文区域 (占 2/3) -->
+<main id="main-content" class="max-w-7xl mx-auto px-4 py-14 md:py-16">
+    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
         <article class="lg:w-2/3">
-            <div class="prose dark:prose-invert prose-blue max-w-none">
-                {{ &articleSingle.contentHtml }}
+            <div class="mb-8 flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.38em] text-gray-400">
+                <span class="inline-block w-12 h-px bg-gray-200 dark:bg-gray-800"></span>
+                <span>Article Body</span>
+            </div>
+            <div class="reading-frame">
+                <div class="prose dark:prose-invert prose-blue max-w-none">
+                    {{ &articleSingle.contentHtml }}
+                </div>
             </div>
 
-            <!-- 上下篇导航 -->
-            <nav class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-800 border border-gray-100 dark:border-gray-800">
+            <nav class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-4" aria-label="Article pagination">
                 {{ #articleNewer }}
-                <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-950 hover:bg-gray-50 transition">
-                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-2">← Previous Story</span>
+                <a href="{{ &url }}" class="group p-8 sidebar-card hover:bg-white dark:hover:bg-gray-950 transition" rel="prev">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-2">&larr; Previous Story</span>
                     <p class="font-bold text-base tracking-tight leading-snug">{{ &title }}</p>
                 </a>
                 {{ /articleNewer }}
                 {{ #articleOlder }}
-                <a href="{{ &url }}" class="group p-8 bg-white dark:bg-gray-950 hover:bg-gray-50 transition text-right">
-                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-2">Next Story →</span>
+                <a href="{{ &url }}" class="group p-8 sidebar-card hover:bg-white dark:hover:bg-gray-950 transition text-right" rel="next">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-2">Next Story &rarr;</span>
                     <p class="font-bold text-base tracking-tight leading-snug">{{ &title }}</p>
                 </a>
                 {{ /articleOlder }}
             </nav>
         </article>
 
-        <!-- 右侧侧边栏 (占 1/3) -->
-        <aside class="lg:w-1/3 space-y-12">
-            
-            <!-- 订阅引导区 (Newsletter) -->
-            <div class="p-8 border border-gray-100 dark:border-gray-800 rounded-sm bg-gray-50/50 dark:bg-gray-900/30">
+        <aside class="lg:w-1/3 space-y-10">
+            <div class="p-8 rounded-sm sidebar-card">
+                <p class="subtle-label mb-4">Newsletter</p>
                 <h4 class="serif-title italic text-xl mb-4">Want More Like This?</h4>
                 <p class="text-xs text-gray-500 mb-6 leading-relaxed uppercase tracking-widest">Exclusive content delivered straight to your inbox.</p>
-                <div class="flex">
-                    <input type="email" id="sub-email" placeholder="YOUR EMAIL" class="flex-grow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 text-[10px] focus:outline-none focus:border-blue-500">
-                    <button onclick="subscribeEmail(event)" class="bg-black text-white px-6 py-2 text-[10px] font-black uppercase hover:bg-blue-600 transition">JOIN</button>
-                </div>
+                <form id="subscribe-form" class="space-y-3" onsubmit="subscribeEmail(event)" novalidate>
+                    <label for="sub-email" class="block text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Email</label>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" id="sub-email" name="email" placeholder="YOUR EMAIL" autocomplete="email" inputmode="email" required aria-describedby="subscribe-feedback" class="flex-grow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.15em] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        <button type="submit" class="bg-black text-white px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-blue-600 transition sm:min-w-[8rem]">JOIN</button>
+                    </div>
+                    <p id="subscribe-feedback" class="min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400" role="status" aria-live="polite"></p>
+                    <p class="text-[10px] text-gray-300 font-bold uppercase tracking-[0.24em]">No spam. Unsubscribe anytime.</p>
+                </form>
             </div>
 
-            <!-- 关联文章列表 (Related Articles) -->
-            <div>
+            <div class="p-8 rounded-sm sidebar-card">
                 <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-8 pb-4 border-b border-gray-100 dark:border-gray-800">Related Articles</h5>
                 <div class="space-y-8">
                     {{ #relatedArticles }}
                     <article class="flex gap-4 group">
                         <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-sm bg-gray-100">
-                            <a href="{{ &url }}">
-                                <img src="{{ &img }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            <a href="{{ &url }}" aria-label="Read related article: {{ &title }}">
+                                <img src="{{ &img }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="{{ &title }}" loading="lazy" decoding="async">
                             </a>
                         </div>
                         <div class="flex flex-col justify-center">
@@ -172,7 +308,7 @@
                                 {{ #category }}{{.}}{{ /category }}
                             </div>
                             <h4 class="text-sm serif-title leading-snug tracking-tight italic group-hover:text-blue-600 transition line-clamp-2">
-                                <a href="{{ &url }}">{{ &title }}</a>
+                                <a href="{{ &url }}" aria-label="Read related article: {{ &title }}">{{ &title }}</a>
                             </h4>
                         </div>
                     </article>
@@ -180,16 +316,14 @@
                 </div>
             </div>
 
-            <!-- 侧边栏吸底小部件 -->
-            <div class="sticky top-24 pt-8 border-t border-gray-100 dark:border-gray-800">
-                <p class="text-[9px] text-gray-300 font-bold uppercase tracking-[0.3em]">Follow the journey</p>
+            <div class="sticky top-24 p-8 rounded-sm sidebar-card">
+                <p class="subtle-label mb-4">Follow the journey</p>
                 <div class="mt-4 flex flex-wrap gap-2">
                     {{ #profile.socials }}
-                    <a href="{{ url }}" class="text-[10px] font-black uppercase border border-gray-200 dark:border-gray-800 px-3 py-1 hover:bg-black hover:text-white transition">{{ platform }}</a>
+                    <a href="{{ url }}" class="text-[10px] font-black uppercase border border-gray-200 dark:border-gray-800 px-3 py-1 hover:bg-black hover:text-white transition" aria-label="Open {{ platform }}">{{ platform }}</a>
                     {{ /profile.socials }}
                 </div>
             </div>
-
         </aside>
     </div>
 </main>
@@ -197,50 +331,83 @@
 <footer class="bg-gray-50 dark:bg-gray-950 py-20 text-center border-t border-gray-100 dark:border-gray-900">
     <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-2xl serif-title italic mb-8">{{ siteName }}</h2>
-        <div class="flex justify-center gap-10 text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-10">
+        <div class="flex justify-center gap-10 text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-10" role="navigation" aria-label="Footer navigation">
             <a href="/" class="hover:text-black dark:hover:text-white transition">Home</a>
             <a href="/admin/" class="hover:text-black dark:hover:text-white transition">Dashboard</a>
         </div>
-        <p class="text-[9px] text-gray-300 font-bold uppercase tracking-widest">&copy; 2024 · Handcrafted with Cloudflare</p>
+        <p class="text-[9px] text-gray-300 font-bold uppercase tracking-widest">&copy; 2024 &middot; Handcrafted with Cloudflare</p>
     </div>
 </footer>
 
-<script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
-<script>document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('pre code').forEach((el) => { hljs.highlightElement(el); }); });
-async function subscribeEmail(event) {
-    event.preventDefault(); // 防止默认行为
-    
-    const emailEl = document.getElementById('sub-email');
-    const email = emailEl.value;
-    if(!email) return;
+<script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.hljs) return;
+    document.querySelectorAll('pre code').forEach((el) => {
+        hljs.highlightElement(el);
+    });
+});
 
-    // 获取当前点击的按钮
-    const btn = event.currentTarget || event.target;
+function setSubscribeFeedback(message, isError) {
+    const statusEl = document.getElementById('subscribe-feedback');
+    statusEl.textContent = message;
+    statusEl.className = isError
+        ? 'min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-red-500'
+        : message
+            ? 'min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-green-600'
+            : 'min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400';
+}
+
+const articleSubscribeEmailEl = document.getElementById('sub-email');
+if (articleSubscribeEmailEl) {
+    articleSubscribeEmailEl.addEventListener('input', () => {
+        if (document.getElementById('subscribe-feedback').textContent) {
+            setSubscribeFeedback('', false);
+        }
+    });
+}
+
+async function subscribeEmail(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const emailEl = document.getElementById('sub-email');
+    const btn = form.querySelector('button[type="submit"]');
+    const email = emailEl.value.trim();
+
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        setSubscribeFeedback('Enter a valid email address', true);
+        emailEl.focus();
+        return;
+    }
+
     const oldText = btn.innerText;
-    
-    // 改变按钮状态
     btn.innerText = '...';
     btn.disabled = true;
+    setSubscribeFeedback('Submitting request', false);
 
     try {
         const res = await fetch('/subscribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email })
+            body: JSON.stringify({ email })
         });
-        
         const data = await res.json();
-        
+
         if (data.rst) {
-            alert(data.msg || '订阅成功！感谢关注。');
+            const message = data.msg || 'Subscription successful';
+            setSubscribeFeedback(message, false);
+            alert(message);
             emailEl.value = '';
-        } else { 
-            alert('订阅失败：' + (data.msg || '请稍后重试。')); 
+        } else {
+            const message = data.msg || 'Please try again later';
+            setSubscribeFeedback(message, true);
+            alert('Subscription failed: ' + message);
         }
-    } catch (e) { 
-        alert('网络请求出错，请稍后重试'); 
+    } catch (e) {
+        setSubscribeFeedback('Network request failed', true);
+        alert('Network request failed. Please try again later.');
     } finally {
-        // 恢复按钮状态
         btn.innerText = oldText;
         btn.disabled = false;
     }

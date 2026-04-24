@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>{{ title }}</title>
-    <meta name="google-site-verification" content="TYMcpm941mSEhn9wIWLptvwVxi2CsdIDmZ6nljJK5sI" />
-    <!-- 新增 SEO 标签 -->
+    <meta name="google-site-verification" content="TYMcpm941mSEhn9wIWLptvwVxi2CsdIDmZ6nljJK5sI">
     <meta name="description" content="{{ siteDescription }}">
     <meta name="keywords" content="{{ siteKeywords }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="stylesheet" href="{{{ fontUrl }}}">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap">
     <script src="https://cdn.tailwindcss.com?plugins=typography,line-clamp"></script>
     <script>
         tailwind.config = {
@@ -20,48 +23,107 @@
                         sans: [{{{ fontSans }}}],
                         serif: ['"Noto Serif SC"', 'serif'],
                     },
-                }
-            }
-        }
+                },
+            },
+        };
     </script>
     <style>
         * { font-family: {{{ fontSans }}} !important; }
         .serif-title { font-family: 'Noto Serif SC', serif !important; font-weight: 900; }
         body { -webkit-font-smoothing: antialiased; }
-        /* 强制标题显示为 3 行的高度，即使内容较短 */
-        .fixed-title-height { 
-            display: -webkit-box; 
-            -webkit-line-clamp: 3; 
-            -webkit-box-orient: vertical; 
+        .fixed-title-height {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            /* 基于 leading-tight (1.25) 计算：text-xl 对应 1.25rem * 1.25 * 3 = 4.68rem; text-2xl 对应 1.5rem * 1.25 * 3 = 5.62rem */
-            height: 4.7rem; 
+            height: 4.7rem;
         }
-        @media (min-width: 768px) { .fixed-title-height { height: 5.7rem; } }
-        
+        @media (min-width: 768px) {
+            .fixed-title-height { height: 5.7rem; }
+        }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .section-divider { display: flex; align-items: center; margin: 3rem 0; }
         .section-divider::after { content: ""; flex: 1; height: 1px; background: #eee; margin-left: 1rem; }
         .dark .section-divider::after { background: #333; }
+        .hero-shell {
+            position: relative;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.08), transparent 35%);
+        }
+        .dark .hero-shell {
+            background-image:
+                radial-gradient(circle at top left, rgba(96, 165, 250, 0.12), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(148, 163, 184, 0.08), transparent 35%);
+        }
+        .hero-shell::after {
+            content: "";
+            position: absolute;
+            inset: 1.25rem;
+            border: 1px solid rgba(229, 231, 235, 0.8);
+            pointer-events: none;
+        }
+        .dark .hero-shell::after { border-color: rgba(31, 41, 55, 0.9); }
+        .story-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(243, 244, 246, 1);
+            border-top: 3px solid rgba(17, 24, 39, 1);
+            padding: 1.5rem;
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+        .story-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.10);
+            border-color: rgba(209, 213, 219, 1);
+        }
+        .dark .story-card {
+            background: rgba(3, 7, 18, 0.72);
+            border-color: rgba(17, 24, 39, 1);
+            border-top-color: rgba(96, 165, 250, 0.7);
+        }
+        .dark .story-card:hover { border-color: rgba(55, 65, 81, 1); }
+        .story-card-media {
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+        }
+        .story-card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            transform: translateY(-200%);
+            background: #111827;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            z-index: 100;
+            transition: transform 0.2s ease;
+        }
+        .skip-link:focus { transform: translateY(0); }
     </style>
     <script>
         var _hmt = _hmt || [];
         (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?ed81d6526f705dfd3e8f0670ecdaca68";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
+            var hm = document.createElement("script");
+            hm.async = true;
+            hm.src = "https://hm.baidu.com/hm.js?ed81d6526f705dfd3e8f0670ecdaca68";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
         })();
     </script>
 </head>
 <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+<a href="#main-content" class="skip-link">跳到正文</a>
 
-<nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm">
+<nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm" aria-label="Primary navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
             <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap">
-                <a href="/" class="hover:text-blue-600 transition">{{ siteName }}</a>
+                <a href="/" class="hover:text-blue-600 transition" aria-label="{{ siteName }} home">{{ siteName }}</a>
             </div>
             <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
                 <div class="flex space-x-6 justify-start md:justify-end px-4 md:px-0 text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
@@ -74,16 +136,29 @@
     </div>
 </nav>
 
-<header class="bg-gray-50 dark:bg-gray-900/50 py-10 md:py-24 border-b border-gray-100 dark:border-gray-900">
+<header class="hero-shell bg-gray-50 dark:bg-gray-900/50 py-10 md:py-24 border-b border-gray-100 dark:border-gray-900">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10 md:mb-14">
+            <div class="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.45em] text-blue-600">
+                <span class="inline-block w-10 h-px bg-blue-600"></span>
+                <span>Independent Journal</span>
+            </div>
+            <p class="max-w-xl text-xs md:text-sm text-gray-500 leading-relaxed md:text-right">{{ siteDescription }}</p>
+        </div>
         <div class="flex flex-col md:flex-row items-center gap-10 md:gap-20">
             <div class="w-48 h-64 md:w-64 md:h-80 flex-shrink-0">
-                <img src="{{ profile.avatar }}" class="w-full h-full object-cover shadow-2xl rounded-sm grayscale hover:grayscale-0 transition duration-700 bg-white" alt="Avatar">
+                <div class="relative h-full">
+                    <img src="{{ profile.avatar }}" class="w-full h-full object-cover shadow-2xl rounded-sm grayscale hover:grayscale-0 transition duration-700 bg-white" alt="{{ profile.name }} avatar" decoding="async" fetchpriority="high">
+                    <div class="absolute -bottom-4 -right-4 bg-white/95 dark:bg-gray-950/95 border border-gray-200 dark:border-gray-800 px-4 py-3 text-left shadow-xl">
+                        <p class="text-[9px] font-black uppercase tracking-[0.35em] text-gray-400 mb-1">Profile</p>
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-900 dark:text-white">{{ profile.location }}</p>
+                    </div>
+                </div>
             </div>
             <div class="flex-grow text-center md:text-left">
                 <h2 class="text-4xl md:text-7xl serif-title mb-4 tracking-tighter leading-none">{{ profile.name }}</h2>
                 <p class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs mb-8">{{ profile.jobTitle }}</p>
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 text-[10px] font-black uppercase tracking-widest border-t border-gray-200 dark:border-gray-800 pt-8">
                     <div>
                         <span class="text-gray-400 block mb-1">Location</span>
@@ -101,10 +176,12 @@
 
                 <div class="flex flex-wrap justify-center md:justify-start gap-4">
                     {{ #profile.socials }}
-                    <a href="{{ url }}" target="_blank" class="group relative px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase hover:bg-black hover:text-white transition">
+                    <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="group relative px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase hover:bg-black hover:text-white transition" aria-label="Open {{ platform }} in a new tab">
                         {{ platform }}
                         {{ #isQR }}
-                        <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50"><img src="{{ url }}" class="w-32 h-32 max-w-none"></div>
+                        <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50">
+                            <img src="{{ url }}" class="w-32 h-32 max-w-none" alt="{{ platform }} QR code" decoding="async">
+                        </div>
                         {{ /isQR }}
                     </a>
                     {{ /profile.socials }}
@@ -114,49 +191,79 @@
     </div>
 </header>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="section-divider">
         <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">THE STORIES</span>
     </div>
 
+    <div class="mb-8 md:mb-12 max-w-2xl">
+        <p class="text-sm md:text-base text-gray-500 leading-relaxed">A curated stream of essays, notes, and workflow observations shaped into a magazine-style reading experience.</p>
+    </div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
         {{ #articleList }}
-        <article class="flex flex-col group">
+        <article class="story-card flex flex-col h-full group">
             {{ #img }}
-            <div class="aspect-square overflow-hidden mb-6 bg-gray-100 rounded-sm shadow-sm border border-gray-50 dark:border-gray-900">
-                <a href="{{ &url }}">
-                    <img src="{{ &img }}" loading="lazy" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
+            <div class="story-card-media aspect-[4/4.4] overflow-hidden mb-6 bg-gray-100 rounded-sm border border-gray-50 dark:border-gray-900">
+                <a href="{{ &url }}" aria-label="Read article: {{ &title }}">
+                    <img src="{{ &img }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105" alt="{{ &title }}">
                 </a>
             </div>
             {{ /img }}
-            
-            <div class="flex flex-col text-left">
+
+            <div class="flex flex-col text-left h-full">
                 <div class="text-xs md:text-sm font-black text-blue-600 uppercase tracking-[0.3em] mb-3">
                     {{ #category }}{{.}}{{ /category }}
                 </div>
-                <!-- 修改点：使用了 fixed-title-height 类确保高度固定 -->
                 <h3 class="text-xl md:text-2xl serif-title leading-tight tracking-tight group-hover:text-gray-500 transition mb-3 fixed-title-height">
-                    <a href="{{ &url }}">{{ &title }}</a>
+                    <a href="{{ &url }}" aria-label="Read article: {{ &title }}">{{ &title }}</a>
                 </h3>
                 <div class="flex justify-between items-center gap-4 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest border-t border-gray-100 dark:border-gray-900 pt-3">
-                    <span>📅 {{ createDate10 }}</span>
-                    <span class="text-right">👁️ {{ viewCount }}</span>
+                    <span>&#128197; {{ createDate10 }}</span>
+                    <span class="text-right">&#128065; {{ viewCount }}</span>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-900">
+                    <a href="{{ &url }}" class="story-card-cta text-[10px] font-black uppercase tracking-[0.35em] text-gray-500 group-hover:text-blue-600 transition" aria-label="Read article: {{ &title }}">
+                        <span>Read Story</span>
+                        <span aria-hidden="true">&rarr;</span>
+                    </a>
                 </div>
             </div>
         </article>
         {{ /articleList }}
     </div>
 
-    <nav class="mt-32 flex justify-center gap-16 border-t border-gray-100 dark:border-gray-900 pt-16 font-black text-[10px] tracking-[0.3em] uppercase">
-        {{ #pageNewer }}<a href="{{ url }}" class="hover:text-blue-600 transition">← Newer</a>{{ /pageNewer }}
-        {{ #pageOlder }}<a href="{{ url }}" class="hover:text-blue-600 transition">Older →</a>{{ /pageOlder }}
+    <nav class="mt-32 flex justify-center gap-16 border-t border-gray-100 dark:border-gray-900 pt-16 font-black text-[10px] tracking-[0.3em] uppercase" aria-label="Article list pagination">
+        {{ #pageNewer }}<a href="{{ url }}" class="hover:text-blue-600 transition" rel="prev">&larr; Newer</a>{{ /pageNewer }}
+        {{ #pageOlder }}<a href="{{ url }}" class="hover:text-blue-600 transition" rel="next">Older &rarr;</a>{{ /pageOlder }}
     </nav>
 </main>
 
 <footer class="bg-gray-50 dark:bg-gray-950 py-24 border-t border-gray-100 dark:border-gray-900">
     <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+        <section class="mb-20 border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/40 rounded-sm p-8 md:p-10 lg:p-12 shadow-[0_24px_80px_rgba(15,23,42,0.06)] dark:shadow-none" aria-labelledby="home-subscribe-title">
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 lg:gap-12">
+                <div class="max-w-2xl text-left">
+                    <p class="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 mb-4">Newsletter</p>
+                    <h3 id="home-subscribe-title" class="serif-title italic text-2xl md:text-3xl lg:text-4xl mb-4 text-gray-900 dark:text-white">Want More Like This?</h3>
+                    <p class="text-sm text-gray-500 leading-loose">Exclusive content delivered straight to your inbox.</p>
+                    <p class="mt-4 text-[10px] font-black uppercase tracking-[0.28em] text-gray-300 dark:text-gray-600">Notes on product craft, publishing systems, and deliberate web design.</p>
+                </div>
+                <form id="home-subscribe-form" class="w-full lg:max-w-xl space-y-3 text-left" onsubmit="homeSubscribeEmail(event)" novalidate>
+                    <label for="home-sub-email" class="block text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Email</label>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" id="home-sub-email" name="email" placeholder="YOUR EMAIL" autocomplete="email" inputmode="email" required aria-describedby="home-subscribe-feedback" class="flex-grow min-w-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.15em] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        <button type="submit" class="bg-black text-white px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-blue-600 transition sm:min-w-[9rem]">JOIN</button>
+                    </div>
+                    <p id="home-subscribe-feedback" class="min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400" role="status" aria-live="polite"></p>
+                    <p class="text-[10px] text-gray-300 font-bold uppercase tracking-[0.24em]">No spam. Unsubscribe anytime.</p>
+                </form>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16 mb-20">
             <div class="md:col-span-2 text-left">
+                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-5">About This Space</p>
                 <h2 class="text-3xl serif-title italic mb-8 text-gray-900 dark:text-white">{{ siteName }}</h2>
                 <p class="text-gray-500 text-sm max-w-sm leading-loose">{{ siteDescription }}</p>
             </div>
@@ -171,15 +278,83 @@
             <div class="text-left">
                 <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Connect</h4>
                 <div class="flex flex-col gap-4 text-xs font-bold uppercase text-blue-600">
-                    {{ #widgetLinkList }}<a href="{{ &url }}" target="_blank" class="hover:underline transition tracking-widest uppercase">{{ &title }}</a>{{ /widgetLinkList }}
+                    {{ #widgetLinkList }}<a href="{{ &url }}" target="_blank" rel="noopener noreferrer" class="hover:underline transition tracking-widest uppercase">{{ &title }}</a>{{ /widgetLinkList }}
                     <a href="/admin/" class="text-gray-300 italic lowercase tracking-normal">/dashboard</a>
                 </div>
             </div>
         </div>
         <div class="text-center text-[9px] text-gray-400 font-bold uppercase tracking-[0.4em] border-t border-gray-100 dark:border-gray-800 pt-16">
-            &copy; 2024 · All Rights Reserved
+            &copy; 2024 &middot; All Rights Reserved
         </div>
     </div>
 </footer>
+
+<script>
+function setHomeSubscribeFeedback(message, isError) {
+    const statusEl = document.getElementById('home-subscribe-feedback');
+    statusEl.textContent = message;
+    statusEl.className = isError
+        ? 'min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-red-500'
+        : message
+            ? 'min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-green-600'
+            : 'min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const emailEl = document.getElementById('home-sub-email');
+    if (!emailEl) return;
+    emailEl.addEventListener('input', () => {
+        if (document.getElementById('home-subscribe-feedback').textContent) {
+            setHomeSubscribeFeedback('', false);
+        }
+    });
+});
+
+async function homeSubscribeEmail(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const emailEl = document.getElementById('home-sub-email');
+    const btn = form.querySelector('button[type="submit"]');
+    const email = emailEl.value.trim();
+
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        setHomeSubscribeFeedback('Enter a valid email address', true);
+        emailEl.focus();
+        return;
+    }
+
+    const oldText = btn.innerText;
+    btn.innerText = '...';
+    btn.disabled = true;
+    setHomeSubscribeFeedback('Submitting request', false);
+
+    try {
+        const res = await fetch('/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+
+        if (data.rst) {
+            const message = data.msg || 'Subscription successful';
+            setHomeSubscribeFeedback(message, false);
+            alert(message);
+            emailEl.value = '';
+        } else {
+            const message = data.msg || 'Please try again later';
+            setHomeSubscribeFeedback(message, true);
+            alert('Subscription failed: ' + message);
+        }
+    } catch (e) {
+        setHomeSubscribeFeedback('Network request failed', true);
+        alert('Network request failed. Please try again later.');
+    } finally {
+        btn.innerText = oldText;
+        btn.disabled = false;
+    }
+}
+</script>
 </body>
 </html>
