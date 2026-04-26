@@ -43,7 +43,7 @@
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        .section-divider { display: flex; align-items: center; margin: 3rem 0; }
+        .section-divider { display: flex; align-items: center; margin: 2.25rem 0; }
         .section-divider::after { content: ""; flex: 1; height: 1px; background: #eee; margin-left: 1rem; }
         .dark .section-divider::after { background: #333; }
         .hero-shell {
@@ -70,7 +70,7 @@
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(243, 244, 246, 1);
             border-top: 3px solid rgba(17, 24, 39, 1);
-            padding: 1.5rem;
+            padding: 1.25rem;
             transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
         }
         .story-card:hover {
@@ -92,6 +92,33 @@
             align-items: center;
             gap: 0.5rem;
         }
+        .eyebrow-label {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+        }
+        .eyebrow-label-accent { color: #2563eb; }
+        .dark .eyebrow-label-accent { color: #60a5fa; }
+        .eyebrow-label-muted { color: #9ca3af; }
+        .meta-row {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+        }
+        .supporting-note {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+        .footer-copy {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+        }
         .skip-link {
             position: absolute;
             left: 1rem;
@@ -104,6 +131,12 @@
             transition: transform 0.2s ease;
         }
         .skip-link:focus { transform: translateY(0); }
+        @media (min-width: 768px) {
+            .section-divider { margin: 3rem 0; }
+            .story-card { padding: 1.5rem; }
+            .eyebrow-label { letter-spacing: 0.45em; }
+            .meta-row { font-size: 12px; }
+        }
     </style>
     <script>
         var _hmt = _hmt || [];
@@ -121,12 +154,12 @@
 
 <nav class="bg-white/90 dark:bg-gray-950/90 border-b border-gray-100 dark:border-gray-900 sticky top-0 z-50 backdrop-blur-sm" aria-label="Primary navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center py-4 md:h-16 gap-4">
-            <div class="text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title whitespace-nowrap">
+        <div class="flex flex-col md:flex-row justify-between items-center py-3 md:py-4 md:h-16 gap-3 md:gap-4">
+            <div class="max-w-full text-center md:text-left text-xl md:text-2xl font-black italic tracking-tighter uppercase serif-title leading-tight sm:whitespace-nowrap">
                 <a href="/" class="hover:text-blue-600 transition" aria-label="{{ siteName }} home">{{ siteName }}</a>
             </div>
-            <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
-                <div class="flex space-x-6 justify-start md:justify-end px-4 md:px-0 text-sm md:text-base font-bold uppercase tracking-widest text-gray-500">
+            <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+                <div class="flex min-w-max space-x-5 md:space-x-6 justify-start md:justify-end text-[11px] sm:text-sm md:text-base font-bold uppercase tracking-[0.28em] md:tracking-widest text-gray-500">
                     {{ #widgetMenuList }}
                     <a href="{{ &url }}" class="hover:text-black dark:hover:text-white transition">{{ &title }}</a>
                     {{ /widgetMenuList }}
@@ -136,47 +169,54 @@
     </div>
 </nav>
 
-<header class="hero-shell bg-gray-50 dark:bg-gray-900/50 py-10 md:py-24 border-b border-gray-100 dark:border-gray-900">
+<header class="hero-shell bg-gray-50 dark:bg-gray-900/50 py-8 md:py-24 border-b border-gray-100 dark:border-gray-900">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10 md:mb-14">
-            <div class="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.45em] text-blue-600">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4 mb-8 md:mb-14">
+            <div class="inline-flex items-center gap-3 eyebrow-label eyebrow-label-accent">
                 <span class="inline-block w-10 h-px bg-blue-600"></span>
                 <span>Independent Journal</span>
             </div>
             <p class="max-w-xl text-xs md:text-sm text-gray-500 leading-relaxed md:text-right">{{ siteDescription }}</p>
         </div>
-        <div class="flex flex-col md:flex-row items-center gap-10 md:gap-20">
-            <div class="w-48 h-64 md:w-64 md:h-80 flex-shrink-0">
+        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-20">
+            <div class="w-40 h-52 sm:w-48 sm:h-64 md:w-64 md:h-80 flex-shrink-0">
                 <div class="relative h-full">
+                    {{ #profile.avatar }}
                     <img src="{{ profile.avatar }}" class="w-full h-full object-cover shadow-2xl rounded-sm grayscale hover:grayscale-0 transition duration-700 bg-white" alt="{{ profile.name }} avatar" decoding="async" fetchpriority="high">
-                    <div class="absolute -bottom-4 -right-4 bg-white/95 dark:bg-gray-950/95 border border-gray-200 dark:border-gray-800 px-4 py-3 text-left shadow-xl">
-                        <p class="text-[9px] font-black uppercase tracking-[0.35em] text-gray-400 mb-1">Profile</p>
+                    {{ /profile.avatar }}
+                    {{ ^profile.avatar }}
+                    <div class="w-full h-full grid place-items-center shadow-2xl rounded-sm bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-4xl md:text-6xl serif-title italic text-gray-300 dark:text-gray-700" aria-label="{{ profile.name }} avatar placeholder">
+                        {{ profile.name }}
+                    </div>
+                    {{ /profile.avatar }}
+                    <div class="absolute -bottom-3 right-0 sm:-right-4 bg-white/95 dark:bg-gray-950/95 border border-gray-200 dark:border-gray-800 px-3 py-2 sm:px-4 sm:py-3 text-left shadow-xl">
+                        <p class="eyebrow-label eyebrow-label-muted mb-1">Profile</p>
                         <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-900 dark:text-white">{{ profile.location }}</p>
                     </div>
                 </div>
             </div>
             <div class="flex-grow text-center md:text-left">
-                <h2 class="text-4xl md:text-7xl serif-title mb-4 tracking-tighter leading-none">{{ profile.name }}</h2>
-                <p class="text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em] text-[10px] md:text-xs mb-8">{{ profile.jobTitle }}</p>
+                <h2 class="text-4xl sm:text-5xl md:text-7xl serif-title mb-4 tracking-tighter leading-none">{{ profile.name }}</h2>
+                <p class="eyebrow-label eyebrow-label-accent mb-6 md:mb-8">{{ profile.jobTitle }}</p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 text-[10px] font-black uppercase tracking-widest border-t border-gray-200 dark:border-gray-800 pt-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 md:mb-8 text-[10px] font-black uppercase tracking-widest border-t border-gray-200 dark:border-gray-800 pt-6 md:pt-8">
                     <div>
-                        <span class="text-gray-400 block mb-1">Location</span>
+                        <span class="eyebrow-label eyebrow-label-muted block mb-1">Location</span>
                         <span class="text-gray-900 dark:text-white">{{ profile.location }}</span>
                     </div>
                     <div>
-                        <span class="text-gray-400 block mb-1">Education</span>
+                        <span class="eyebrow-label eyebrow-label-muted block mb-1">Education</span>
                         <span class="text-gray-900 dark:text-white">{{ profile.education }}</span>
                     </div>
                 </div>
 
-                <div class="max-w-2xl text-gray-600 dark:text-gray-400 text-base md:text-xl leading-relaxed italic mb-10 font-medium">
+                <div class="max-w-2xl text-gray-600 dark:text-gray-400 text-base md:text-xl leading-relaxed italic mb-8 md:mb-10 font-medium">
                     "{{ profile.bio }}"
                 </div>
 
-                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                <div class="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4">
                     {{ #profile.socials }}
-                    <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="group relative px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase hover:bg-black hover:text-white transition" aria-label="Open {{ platform }} in a new tab">
+                    <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="group relative px-5 md:px-6 py-2.5 border border-gray-300 dark:border-gray-700 text-[10px] font-black uppercase tracking-[0.24em] hover:bg-black hover:text-white transition" aria-label="Open {{ platform }} in a new tab">
                         {{ platform }}
                         {{ #isQR }}
                         <div class="hidden group-hover:block absolute bottom-full mb-3 left-1/2 -translate-x-1/2 p-2 bg-white shadow-2xl border z-50">
@@ -191,20 +231,20 @@
     </div>
 </header>
 
-<main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
     <div class="section-divider">
-        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">THE STORIES</span>
+        <span class="eyebrow-label eyebrow-label-muted">THE STORIES</span>
     </div>
 
-    <div class="mb-8 md:mb-12 max-w-2xl">
+    <div class="mb-7 md:mb-12 max-w-2xl">
         <p class="text-sm md:text-base text-gray-500 leading-relaxed">A curated stream of essays, notes, and workflow observations shaped into a magazine-style reading experience.</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 md:gap-x-12 gap-y-12 md:gap-y-16">
         {{ #articleList }}
         <article class="story-card flex flex-col h-full group">
             {{ #img }}
-            <div class="story-card-media aspect-[4/4.4] overflow-hidden mb-6 bg-gray-100 rounded-sm border border-gray-50 dark:border-gray-900">
+            <div class="story-card-media aspect-[4/4.4] overflow-hidden mb-5 md:mb-6 bg-gray-100 rounded-sm border border-gray-50 dark:border-gray-900">
                 <a href="{{ &url }}" aria-label="Read article: {{ &title }}">
                     <img src="{{ &img }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105" alt="{{ &title }}">
                 </a>
@@ -212,18 +252,18 @@
             {{ /img }}
 
             <div class="flex flex-col text-left h-full">
-                <div class="text-xs md:text-sm font-black text-blue-600 uppercase tracking-[0.3em] mb-3">
+                <div class="eyebrow-label eyebrow-label-accent mb-3">
                     {{ #category }}{{.}}{{ /category }}
                 </div>
                 <h3 class="text-xl md:text-2xl serif-title leading-tight tracking-tight group-hover:text-gray-500 transition mb-3 fixed-title-height">
                     <a href="{{ &url }}" aria-label="Read article: {{ &title }}">{{ &title }}</a>
                 </h3>
-                <div class="flex justify-between items-center gap-4 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest border-t border-gray-100 dark:border-gray-900 pt-3">
+                <div class="flex justify-between items-center gap-3 meta-row text-gray-400 border-t border-gray-100 dark:border-gray-900 pt-3">
                     <span>&#128197; {{ createDate10 }}</span>
                     <span class="text-right">&#128065; {{ viewCount }}</span>
                 </div>
                 <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-900">
-                    <a href="{{ &url }}" class="story-card-cta text-[10px] font-black uppercase tracking-[0.35em] text-gray-500 group-hover:text-blue-600 transition" aria-label="Read article: {{ &title }}">
+                    <a href="{{ &url }}" class="story-card-cta text-[10px] md:text-[11px] font-black uppercase tracking-[0.32em] md:tracking-[0.35em] text-gray-500 group-hover:text-blue-600 transition" aria-label="Read article: {{ &title }}">
                         <span>Read Story</span>
                         <span aria-hidden="true">&rarr;</span>
                     </a>
@@ -233,57 +273,57 @@
         {{ /articleList }}
     </div>
 
-    <nav class="mt-32 flex justify-center gap-16 border-t border-gray-100 dark:border-gray-900 pt-16 font-black text-[10px] tracking-[0.3em] uppercase" aria-label="Article list pagination">
+    <nav class="mt-20 md:mt-32 flex flex-wrap justify-center gap-8 md:gap-16 border-t border-gray-100 dark:border-gray-900 pt-10 md:pt-16 font-black text-[10px] md:text-[11px] tracking-[0.28em] md:tracking-[0.3em] uppercase" aria-label="Article list pagination">
         {{ #pageNewer }}<a href="{{ url }}" class="hover:text-blue-600 transition" rel="prev">&larr; Newer</a>{{ /pageNewer }}
         {{ #pageOlder }}<a href="{{ url }}" class="hover:text-blue-600 transition" rel="next">Older &rarr;</a>{{ /pageOlder }}
     </nav>
 </main>
 
-<footer class="bg-gray-50 dark:bg-gray-950 py-24 border-t border-gray-100 dark:border-gray-900">
+<footer class="bg-gray-50 dark:bg-gray-950 py-16 md:py-24 border-t border-gray-100 dark:border-gray-900">
     <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-        <section class="mb-20 border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/40 rounded-sm p-8 md:p-10 lg:p-12 shadow-[0_24px_80px_rgba(15,23,42,0.06)] dark:shadow-none" aria-labelledby="home-subscribe-title">
-            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 lg:gap-12">
+        <section class="mb-16 md:mb-20 border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/40 rounded-sm p-6 md:p-10 lg:p-12 shadow-[0_24px_80px_rgba(15,23,42,0.06)] dark:shadow-none" aria-labelledby="home-subscribe-title">
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 md:gap-8 lg:gap-12">
                 <div class="max-w-2xl text-left">
-                    <p class="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 mb-4">Newsletter</p>
-                    <h3 id="home-subscribe-title" class="serif-title italic text-2xl md:text-3xl lg:text-4xl mb-4 text-gray-900 dark:text-white">Want More Like This?</h3>
-                    <p class="text-sm text-gray-500 leading-loose">Exclusive content delivered straight to your inbox.</p>
-                    <p class="mt-4 text-[10px] font-black uppercase tracking-[0.28em] text-gray-300 dark:text-gray-600">Notes on product craft, publishing systems, and deliberate web design.</p>
+                    <p class="eyebrow-label eyebrow-label-accent mb-4">Newsletter</p>
+                    <h3 id="home-subscribe-title" class="serif-title italic text-2xl md:text-3xl lg:text-4xl mb-3 md:mb-4 text-gray-900 dark:text-white">Want More Like This?</h3>
+                    <p class="text-sm md:text-[15px] text-gray-500 leading-loose">Exclusive content delivered straight to your inbox.</p>
+                    <p class="supporting-note mt-3 md:mt-4 text-gray-300 dark:text-gray-600">Notes on product craft, publishing systems, and deliberate web design.</p>
                 </div>
-                <form id="home-subscribe-form" class="w-full lg:max-w-xl space-y-3 text-left" onsubmit="homeSubscribeEmail(event)" novalidate>
-                    <label for="home-sub-email" class="block text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Email</label>
+                <form id="home-subscribe-form" class="w-full lg:max-w-xl space-y-2.5 md:space-y-3 text-left" onsubmit="homeSubscribeEmail(event)" novalidate>
+                    <label for="home-sub-email" class="block eyebrow-label eyebrow-label-muted">Email</label>
                     <div class="flex flex-col sm:flex-row gap-3">
                         <input type="email" id="home-sub-email" name="email" placeholder="YOUR EMAIL" autocomplete="email" inputmode="email" required aria-describedby="home-subscribe-feedback" class="flex-grow min-w-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.15em] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                        <button type="submit" class="bg-black text-white px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-blue-600 transition sm:min-w-[9rem]">JOIN</button>
+                        <button type="submit" class="bg-black text-white px-5 md:px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-blue-600 transition sm:min-w-[8.5rem] md:min-w-[9rem]">JOIN</button>
                     </div>
                     <p id="home-subscribe-feedback" class="min-h-[1rem] text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400" role="status" aria-live="polite"></p>
-                    <p class="text-[10px] text-gray-300 font-bold uppercase tracking-[0.24em]">No spam. Unsubscribe anytime.</p>
+                    <p class="supporting-note text-gray-300">No spam. Unsubscribe anytime.</p>
                 </form>
             </div>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-16 mb-16 md:mb-20">
             <div class="md:col-span-2 text-left">
-                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-5">About This Space</p>
-                <h2 class="text-3xl serif-title italic mb-8 text-gray-900 dark:text-white">{{ siteName }}</h2>
+                <p class="eyebrow-label eyebrow-label-muted mb-5">About This Space</p>
+                <h2 class="text-3xl serif-title italic mb-6 md:mb-8 text-gray-900 dark:text-white">{{ siteName }}</h2>
                 <p class="text-gray-500 text-sm max-w-sm leading-loose">{{ siteDescription }}</p>
             </div>
             <div class="text-left">
-                <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Explore</h4>
-                <ul class="space-y-4 text-xs font-bold uppercase tracking-widest">
+                <h4 class="eyebrow-label eyebrow-label-muted mb-6 md:mb-8">Explore</h4>
+                <ul class="space-y-3 md:space-y-4 text-xs font-bold uppercase tracking-widest">
                     {{ #widgetCategoryList }}
                     <li><a href="/category/{{.}}" class="hover:text-blue-600 transition">{{.}}</a></li>
                     {{ /widgetCategoryList }}
                 </ul>
             </div>
             <div class="text-left">
-                <h4 class="text-[10px] font-black uppercase tracking-widest mb-8 text-gray-400">Connect</h4>
+                <h4 class="eyebrow-label eyebrow-label-muted mb-6 md:mb-8">Connect</h4>
                 <div class="flex flex-col gap-4 text-xs font-bold uppercase text-blue-600">
                     {{ #widgetLinkList }}<a href="{{ &url }}" target="_blank" rel="noopener noreferrer" class="hover:underline transition tracking-widest uppercase">{{ &title }}</a>{{ /widgetLinkList }}
-                    <a href="/admin/" class="text-gray-300 italic lowercase tracking-normal">/dashboard</a>
+                    <a href="/admin/" class="text-gray-300 italic lowercase tracking-[0.08em]">/dashboard</a>
                 </div>
             </div>
         </div>
-        <div class="text-center text-[9px] text-gray-400 font-bold uppercase tracking-[0.4em] border-t border-gray-100 dark:border-gray-800 pt-16">
+        <div class="text-center footer-copy text-gray-400 border-t border-gray-100 dark:border-gray-800 pt-10 md:pt-16">
             &copy; 2024 &middot; All Rights Reserved
         </div>
     </div>
