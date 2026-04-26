@@ -25,3 +25,8 @@ Record durable decisions here. Do not include secrets.
   - admin-saved menu/category/link/profile data must be verified on public pages
   - sample preview data should cover custom menu/footer/category values, empty profile avatars, and related articles without images
   - durable normalization and staging validation rules live in the sibling `cloudflare-blog-worker/docs/codex/*` handoff files
+- Article video embeds are styled at the theme layer but controlled by the Worker contract:
+  - theme provides responsive `.video-embed` rendering
+  - desktop video embeds may expand to the reading frame edge, but mobile embeds stay at `100%` width to avoid horizontal scrolling
+  - Worker owns YouTube/Bilibili allowlist parsing and unsafe iframe rejection
+  - future feature plans must include explicit risk assessment and mitigation notes

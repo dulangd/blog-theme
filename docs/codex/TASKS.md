@@ -2,6 +2,9 @@
 
 ## Pending
 - Push the checkpointed commits so another device can continue from `main`.
+- Fix article video embed visual sizing in the next theme pass:
+  - player width should align with article content edges
+  - mobile must not introduce horizontal scrolling
 - On the next device, validate clean state before any new edits:
   - `blog-theme` on `main`
   - `blog-theme` clean after pull
@@ -44,3 +47,7 @@
 - Documented the backstage-linked preview expectation for future devices:
   - admin-saved menu/category/link/profile data must be checked through the Worker render contract or staging output
   - local sample preview data should include custom menu/footer/category values plus empty-avatar and no-related-image cases
+- Added article-page theme support for externally embedded videos:
+  - responsive `.video-embed` styling for YouTube/Bilibili iframe content produced by the Worker
+  - no new Mustache fields or public route changes
+- Widened desktop article video embeds as a first attempt while preserving mobile `100%` width, but manual QA still reports that sizing needs another pass.

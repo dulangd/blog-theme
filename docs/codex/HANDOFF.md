@@ -27,6 +27,8 @@ Keep the updated `blog-theme` checkpoint stable while the next cross-project pla
   - third-pass polish introduced a calmer hero shell, a dedicated reading frame, card-based sidebar modules, and clearer previous/next navigation cards for better long-form readability
   - fourth-pass polish tightened mobile hero/sidebar spacing, aligned repeated editorial tokens with the homepage, added mobile-safe wrapping for long site titles, and fixed the blockquote quote mark to use a safe CSS escape
   - backend linkage pass added a related-article image fallback to avoid empty `<img src="">` placeholders when related articles have no cover image
+  - video embed pass added responsive `.video-embed` styling for Worker-approved YouTube/Bilibili iframes
+  - video embed second pass widened desktop video embeds, but manual QA still reports that video size does not visually align with article content edges
 - `docs/codex/preview/` is currently absent on this device:
   - missing preview HTML is normal
   - regenerate it locally only when a visual review pass is needed
@@ -102,7 +104,14 @@ Completed the next front-end slice across both public templates:
   - categories and footer links
   - empty profile avatar
   - related articles with and without images
+  - YouTube/Bilibili video embeds in article content
   - newsletter states
+- Video parsing and safety are not owned by the theme:
+  - `cloudflare-blog-worker` normalizes allowed YouTube/Bilibili URLs
+  - arbitrary iframe/script/event-handler markup is rejected at article save
+  - theme responsibility is responsive rendering of `.video-embed`
+- Known unresolved theme-side video issue:
+  - article video width still needs another visual pass so the player aligns with the article content edges across desktop and mobile
 
 ## Next Actions
 1. Submit the checkpoint in two commits:
