@@ -21,3 +21,7 @@ Record durable decisions here. Do not include secrets.
   - use it for visual review when needed
   - do not include it in checkpoint commits by default
 - For this checkpoint, `cloudflare-blog-worker` stays unchanged and is treated as a reference-only repo for render-contract checks.
+- Backstage-linked preview requires the Worker render contract or staging output, not static sample HTML alone:
+  - admin-saved menu/category/link/profile data must be verified on public pages
+  - sample preview data should cover custom menu/footer/category values, empty profile avatars, and related articles without images
+  - durable normalization and staging validation rules live in the sibling `cloudflare-blog-worker/docs/codex/*` handoff files
